@@ -50,6 +50,12 @@ case Linux2_alpha:
     setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
     setenv LDIRS    "-L${TOOLS_BIN}"
     breaksw
+case Linux2_x86ifc:
+    setenv FC  ifc
+    setenv FFLAGS   "$FFLAGS -cl,${ETDSRC}/${EDSS_EXE}/edss.pcl -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
+    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
+    setenv LDIRS    "-L${SMK_BIN} -L${TOOLS_BIN}"
+    breaksw
 default:
     echo "Do not know about executable format "$EDSS_EXE
     exit( 2 )
@@ -62,4 +68,3 @@ echo "Executable directory:  $TOOLS_BIN"
 echo " "
 
 unalias mv
-
