@@ -30,11 +30,11 @@ if ( $iter > 0 ) then
 
       # Compile for debug case
       case debug:
-	 set fsav = ( $FFLAGS )
-	 setenv FFLAGS "$DBGFLAGS"
-	 make $argv[$i]
-	 setenv FFLAGS "$fsav"
-	 breaksw
+         set fsav = ( $FFLAGS )
+         setenv FFLAGS "$DBGFLAGS"
+         make $argv[$i]
+         setenv FFLAGS "$fsav"
+         breaksw
 
       # Compile for optimized case
       default:
