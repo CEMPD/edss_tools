@@ -49,30 +49,30 @@ C***************************************************************************
         
 C...........   ARGUMENTS and their descriptions.  All are output variables:
         
-        CHARACTER*(*) GNAME	!  grid name
-        CHARACTER*(*) GDESC     !  grid description
-        CHARACTER*(*) CNAME	!  coord sys name
-        INTEGER       CTYPE	!  coord sys type (I/O API code number)
-        CHARACTER*(*) PUNIT     !  projection units (e.g., meters or degrees)
-        REAL*8        P_ALP	!  first, second, third map
-        REAL*8        P_BET	!  projection descriptive
-        REAL*8        P_GAM	!  parameters
-        REAL*8        XCENT	!  lon for coord-system X=0
-        REAL*8        YCENT	!  lat for coord-system Y=0
-        REAL*8        XORIG	!  X-coordinate origin of grid (map units)
-        REAL*8        YORIG	!  Y-coordinate origin of grid
-        REAL*8        XCELL	!  X-coordinate cell dimension
-        REAL*8        YCELL	!  Y-coordinate cell dimension
-        INTEGER       NCOLS	!  number of grid columns
-        INTEGER       NROWS	!  number of grid rows
-        INTEGER       NTHIK	!  BOUNDARY:  perimeter thickness (cells)    
+        CHARACTER(*)  GNAME     !  grid name
+        CHARACTER(*)  GDESC     !  grid description
+        CHARACTER(*)  CNAME     !  coord sys name
+        INTEGER       CTYPE     !  coord sys type (I/O API code number)
+        CHARACTER(*)  PUNIT     !  projection units (e.g., meters or degrees)
+        REAL(8)       P_ALP     !  first, second, third map
+        REAL(8)       P_BET     !  projection descriptive
+        REAL(8)       P_GAM     !  parameters
+        REAL(8)       XCENT     !  lon for coord-system X=0
+        REAL(8)       YCENT     !  lat for coord-system Y=0
+        REAL(8)       XORIG     !  X-coordinate origin of grid (map units)
+        REAL(8)       YORIG     !  Y-coordinate origin of grid
+        REAL(8)       XCELL     !  X-coordinate cell dimension
+        REAL(8)       YCELL     !  Y-coordinate cell dimension
+        INTEGER       NCOLS     !  number of grid columns
+        INTEGER       NROWS     !  number of grid rows
+        INTEGER       NTHIK     !  BOUNDARY:  perimeter thickness (cells)    
                     
 C...........   EXTERNAL FUNCTIONS:
 
         LOGICAL      CHKINT
         LOGICAL      CHKREAL
         LOGICAL      DSCGRID
-        CHARACTER*2  CRLF
+        CHARACTER(2) CRLF
         INTEGER      GETEFILE
         INTEGER      GETNLIST
         INTEGER      INDEX1
@@ -100,7 +100,7 @@ C...........   Grid types and names arrays
      &                                           , UTMGRD3
      &                                           , UTMGRD3 / )
 
-        CHARACTER*15 :: GRDNAMES( MXGRDTYP ) = ( / 'LAT-LON        '
+        CHARACTER(15):: GRDNAMES( MXGRDTYP ) = ( / 'LAT-LON        '
      &                                           , 'GEOGRAPHIC     '
      &                                           , 'LATGRD3        '
      &                                           , 'LAMBERT        '
@@ -116,12 +116,12 @@ C...........   Grid types and names arrays
 
 C...........   Local arrays (note- tried to make these allocatable, but
 C              this caused unexplainable crashing on SGI).
-        CHARACTER*32 :: SEGMENT( 32 )
-        CHARACTER*32 :: UPCSGMT( 32 )
+        CHARACTER(32) :: SEGMENT( 32 )
+        CHARACTER(32) :: UPCSGMT( 32 )
 
 C...........   File units and logical/physical names:
         INTEGER, SAVE :: IDEV    !  unit number of grid information file
-        CHARACTER*16, SAVE :: LNAME !  logical name for grid information file
+        CHARACTER(16), SAVE :: LNAME !  logical name for grid information file
 
 C...........   Scratch local variables and their descriptions:
             
@@ -133,23 +133,23 @@ C...........   Scratch local variables and their descriptions:
         INTEGER         LEGAL    !  valid length of string
         INTEGER         NDEV     !  next file number to be used
 
-        REAL*8       :: RDUM = 0 !  double precision dummy variable
-        REAL*8          DMISS3   !  double precision missing value
+        REAL(8)      :: RDUM = 0 !  double precision dummy variable
+        REAL(8)         DMISS3   !  double precision missing value
 
         LOGICAL      :: CFLAG = .FALSE.   ! true: time to cycle in loop
         LOGICAL      :: EFLAG = .FALSE.   ! true: error detected
         LOGICAL      :: FIRSTIME = .TRUE. ! true: first time routine called
         LOGICAL, SAVE :: GRIDPATH = .TRUE. ! true: for G_GRIDPATH fmt or 1st read
 
-        CHARACTER*16    CDUM     !  character dummy buffer
-        CHARACTER*300   BUFFER   !  multi-purpose buffer
-        CHARACTER*300   GNBUF    !  grid name buffer
-        CHARACTER*300   GDBUF    !  grid description buffer
-        CHARACTER*300   LINE     !  line of file
-        CHARACTER*300   MESG     !  message buffer
-        CHARACTER*300   UPCLINE  !  upper case line of file
+        CHARACTER(16)   CDUM     !  character dummy buffer
+        CHARACTER(300)  BUFFER   !  multi-purpose buffer
+        CHARACTER(300)  GNBUF    !  grid name buffer
+        CHARACTER(300)  GDBUF    !  grid description buffer
+        CHARACTER(300)  LINE     !  line of file
+        CHARACTER(300)  MESG     !  message buffer
+        CHARACTER(300)  UPCLINE  !  upper case line of file
 
-        CHARACTER*16 :: PROGNAME = 'DSCM3GRD' ! program name
+        CHARACTER(16) :: PROGNAME = 'DSCM3GRD' ! program name
 
 C............  single grid file format intergrity flags
         LOGICAL      :: GNAME_FL = .FALSE. !  true: found GNAME
@@ -508,13 +508,13 @@ C********************** INTERNAL SUBPROGRAMS ****************************
 C.............  Subroutine arguments
             CHARACTER(*), INTENT (IN) :: STRINGS( 3 )
             INTEGER     , INTENT (IN) :: OUTTYPE
-            REAL*8      , INTENT(OUT) :: ROUT     ! real output value
+            REAL(8)     , INTENT(OUT) :: ROUT     ! real output value
             INTEGER     , INTENT(OUT) :: IOUT     ! integer output value
 
 C.............  Local variables
             INTEGER   I, L
 
-            CHARACTER*300 MESG
+            CHARACTER(300) MESG
 
 C..........................................................................
 
@@ -558,12 +558,12 @@ C..........................................................................
 C.............  Subroutine arguments
             CHARACTER(*), INTENT (IN) :: KEYWORD
             CHARACTER(*), INTENT (IN) :: CVAL
-            REAL*8      , INTENT (IN) :: RVAL
+            REAL(8)     , INTENT (IN) :: RVAL
             INTEGER     , INTENT (IN) :: IVAL
             INTEGER     , INTENT (IN) :: INTYPE
 
 C.............  Local variables
-            CHARACTER*300 MESG
+            CHARACTER(300) MESG
 
 C..........................................................................
 

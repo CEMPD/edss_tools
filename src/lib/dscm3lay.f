@@ -51,7 +51,7 @@ C...........   ARGUMENTS and their descriptions.  All are output variables:
 C...........   EXTERNAL FUNCTIONS:
         LOGICAL      CHKINT
         LOGICAL      CHKREAL
-        CHARACTER*2  CRLF
+        CHARACTER(2) CRLF
         INTEGER      GETEFILE
         INTEGER      GETNLIST
         INTEGER      INDEX1
@@ -65,7 +65,7 @@ C...........   Local parameters
         INTEGER, PARAMETER :: MXLAYTYP = 6
 
 C...........   Layer structure names arrays
-        CHARACTER*7 :: LAYNAMES( MXLAYTYP ) = ( / 'VGSGPH3'
+        CHARACTER(7):: LAYNAMES( MXLAYTYP ) = ( / 'VGSGPH3'
      &                                          , 'VGSGPN3'
      &                                          , 'VGSIGZ3'
      &                                          , 'VGPRES3'
@@ -74,12 +74,12 @@ C...........   Layer structure names arrays
 
 C...........   Local arrays (note- tried to make these allocatable, but
 C              this caused unexplainable crashing on SGI).
-        CHARACTER*32 :: SEGMENT( 32 )
-        CHARACTER*32 :: UPCSGMT( 32 )
+        CHARACTER(32) :: SEGMENT( 32 )
+        CHARACTER(32) :: UPCSGMT( 32 )
 
 C...........   File units and logical/physical names:
         INTEGER, SAVE :: IDEV    !  unit number of grid information file
-        CHARACTER*16     LNAME   !  logical name for grid information file
+        CHARACTER(16)    LNAME   !  logical name for grid information file
 
 C...........   Scratch local variables and their descriptions:
             
@@ -88,17 +88,17 @@ C...........   Scratch local variables and their descriptions:
         INTEGER         IREC     !  record counter
         INTEGER         NLAYREAD !  number of layers for reading sigma levels
 
-        REAL*8          DMISS3   !  double precision missing value
+        REAL(8)         DMISS3   !  double precision missing value
 
         LOGICAL      :: EFLAG = .FALSE.   ! true: error detected
         LOGICAL      :: FIRSTIME = .TRUE. ! true: first time routine called
 
-        CHARACTER*300   BUFFER   !  multi-purpose buffer
-        CHARACTER*300   LINE     !  line of file
-        CHARACTER*300   MESG     !  message buffer
-        CHARACTER*300   UPCLINE  !  upper case line of file
+        CHARACTER(300)  BUFFER   !  multi-purpose buffer
+        CHARACTER(300)  LINE     !  line of file
+        CHARACTER(300)  MESG     !  message buffer
+        CHARACTER(300)  UPCLINE  !  upper case line of file
 
-        CHARACTER*16 :: PROGNAME = 'DSCM3LAY' ! program name
+        CHARACTER(16) :: PROGNAME = 'DSCM3LAY' ! program name
 
 C***********************************************************************
 C   begin body of function DSCM3LAY
@@ -121,8 +121,8 @@ C.........  Open grid file
         END IF
 
 C.........  Initialize grid setting to missing
-        NLAYS	= IMISS3
-        VGTYP	= IMISS3
+        NLAYS   = IMISS3
+        VGTYP   = IMISS3
         DMISS3  = DBLE( AMISS3 )
 
 C.........  Make sure read it at the start of the file
@@ -331,13 +331,13 @@ C********************** INTERNAL SUBPROGRAMS ****************************
 C.............  Subroutine arguments
             CHARACTER(*), INTENT (IN) :: STRINGS( 3 )
             INTEGER     , INTENT (IN) :: OUTTYPE
-            REAL*8      , INTENT(OUT) :: ROUT     ! real output value
+            REAL(8)     , INTENT(OUT) :: ROUT     ! real output value
             INTEGER     , INTENT(OUT) :: IOUT     ! integer output value
 
 C.............  Local variables
             INTEGER   I, L
 
-            CHARACTER*300 MESG
+            CHARACTER(300) MESG
 
 C..........................................................................
 
@@ -381,12 +381,12 @@ C..........................................................................
 C.............  Subroutine arguments
             CHARACTER(*), INTENT (IN) :: KEYWORD
             CHARACTER(*), INTENT (IN) :: CVAL
-            REAL*8      , INTENT (IN) :: RVAL
+            REAL(8)     , INTENT (IN) :: RVAL
             INTEGER     , INTENT (IN) :: IVAL
             INTEGER     , INTENT (IN) :: INTYPE
 
 C.............  Local variables
-            CHARACTER*300 MESG
+            CHARACTER(300) MESG
 
 C..........................................................................
 
