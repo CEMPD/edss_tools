@@ -149,22 +149,18 @@ C   begin body of function DSCM3GRD
 
 C.........  Get value of Models-3 environment variable for grid and check
 C           exit status
-        IF( FIRSTIME ) THEN
+        LNAME = 'G_GRIDPATH'
 
-            FIRSTIME = .FALSE.
-            LNAME = 'G_GRIDPATH'
+C.........  Open grid file
+        IDEV = GETEFILE( LNAME, .TRUE., .TRUE., PROGNAME )
 
-C.............  Open grid file
-            IDEV = GETEFILE( LNAME, .TRUE., .TRUE., PROGNAME )
+        IF( IDEV .LE. 0 ) THEN
 
-            IF( IDEV .LE. 0 ) THEN
+            L = LEN_TRIM( LNAME )
+            MESG = 'Could not open file "' // LNAME( 1:L ) // '"!'
+            DSCM3GRD = .FALSE.
+            RETURN
 
-                L = LEN_TRIM( LNAME )
-                MESG = 'Could not open file "' // LNAME( 1:L ) // '"!'
-                DSCM3GRD = .FALSE.
-                RETURN
-
-            END IF
         END IF
 
 C.........  Initialize grid setting to missing
@@ -365,6 +361,9 @@ C.........  Make sure everything important has been defined
         CALL GRDINFO_DEFINED( 'NTHIK', CDUM, RDUM, NTHIK, M3INT )
  
         DSCM3GRD = ( .NOT. EFLAG )
+
+C.........  Close grid file
+        CLOSE( IDEV )
 
         RETURN
         
