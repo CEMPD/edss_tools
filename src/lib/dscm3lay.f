@@ -18,21 +18,18 @@ C     Copied and modified from DSCM3LAY, version 1.10
 C
 C**************************************************************************
 C
-C Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-C                System
+C Project Title: EDSS Tools Library
 C File: @(#)$Id$
 C
-C COPYRIGHT (C) 2001, MCNC--North Carolina Supercomputing Center
+C COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
 C All Rights Reserved
 C
-C See file COPYRIGHT for conditions of use.
+C Carolina Environmental Program
+C University of North Carolina at Chapel Hill
+C 137 E. Franklin St., CB# 6116
+C Chapel Hill, NC 27599-6116
 C
-C Environmental Programs Group
-C MCNC--North Carolina Supercomputing Center
-C P.O. Box 12889
-C Research Triangle Park, NC  27709-2889
-C
-C env_progs@mcnc.org
+C smoke@unc.edu
 C
 C Pathname: $Source$
 C Last updated: $Date$ 
@@ -42,7 +39,6 @@ C***************************************************************************
         IMPLICIT NONE
         
         INCLUDE 'IOCNST3.EXT'
-        INCLUDE 'IOSTRG3.EXT'
         INCLUDE 'PARMS3.EXT'               
         
 C...........   ARGUMENTS and their descriptions.  All are output variables:
@@ -67,7 +63,6 @@ C...........   EXTERNAL FUNCTIONS:
         
 C...........   Local parameters
         INTEGER, PARAMETER :: MXLAYTYP = 6
-        INTEGER, PARAMETER :: M3CHAR = 7
 
 C...........   Layer structure names arrays
         CHARACTER*7 :: LAYNAMES( MXLAYTYP ) = ( / 'VGSGPH3'

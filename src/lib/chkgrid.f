@@ -16,21 +16,18 @@ C  REVISION  HISTORY:
 C
 C**************************************************************************
 C
-C Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-C                System
+C Project Title: EDSS Tools Library
 C File: @(#)$Id$
 C
-C COPYRIGHT (C) 2002, MCNC--North Carolina Supercomputing Center
+C COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
 C All Rights Reserved
 C
-C See file COPYRIGHT for conditions of use.
+C Carolina Environmental Program
+C University of North Carolina at Chapel Hill
+C 137 E. Franklin St., CB# 6116
+C Chapel Hill, NC 27599-6116
 C
-C Environmental Programs Group
-C MCNC--North Carolina Supercomputing Center
-C P.O. Box 12889
-C Research Triangle Park, NC  27709-2889
-C
-C env_progs@mcnc.org
+C smoke@unc.edu
 C
 C Pathname: $Source$
 C Last updated: $Date$
@@ -49,7 +46,6 @@ C.........  This module contains the global variables for the 3-d grid
 C.........  INCLUDES:
         INCLUDE 'IOCNST3.EXT'   !  emissions constant parameters
         INCLUDE 'PARMS3.EXT'    !  I/O API parameters
-        INCLUDE 'IODECL3.EXT'   !  I/O API function declarations
         INCLUDE 'FDESC3.EXT'    !  I/O API file desc. data structures
         INCLUDE 'FLTERR.EXT'    !  error filter statement function
 
