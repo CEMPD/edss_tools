@@ -1,5 +1,5 @@
 
-        SUBROUTINE GETM3EPI( TZONE, SDATE, STIME, NSTEPS )
+        SUBROUTINE GETM3EPI( TZONE, SDATE, STIME, TSTEP, NSTEPS )
 
 C***********************************************************************
 C  subroutine body starts at line
@@ -51,6 +51,7 @@ C...........   ARGUMENTS and their descriptions:
         INTEGER, INTENT(IN    ) :: TZONE     ! Time zone or < 0 if unknown
         INTEGER, INTENT(IN OUT) :: SDATE     ! Start date (YYYYDDD)
         INTEGER, INTENT(IN OUT) :: STIME     ! Start time (HHMMSS)
+        INTEGER, INTENT(IN OUT) :: TSTEP     ! Time step (HHMMSS)
         INTEGER, INTENT(IN OUT) :: NSTEPS    ! Number of time steps
      
 C...........   EXTERNAL FUNCTIONS:
@@ -80,7 +81,6 @@ C...........   LOCAL VARIABLES their descriptions:
         INTEGER       JRUNLEN      ! episode duration from E.V. (HHMMSS)
         INTEGER       L            ! tmp string length
         INTEGER       N            ! tmp duration HHMMSS 
-        INTEGER       TSTEP        ! time step (HHMMSS) 
 
         CHARACTER*300 MESG         ! Message buffer
 
@@ -101,6 +101,7 @@ C           actual files in case the environment variables are not set)
      &                    STIME, IOS )
         G_TSTEP = ENVINT( 'G_TSTEP', 'Time step (HHMMSS)', 
      &                    TSTEP, IOS )
+        TSTEP = G_TSTEP
 
         IF( NSTEPS .GT. 0 ) THEN  ! only reset if argument is positive.
             N = NSTEPS * TSTEP
