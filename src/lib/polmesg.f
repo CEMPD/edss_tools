@@ -22,7 +22,7 @@ C Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
 C                System
 C File: @(#)$Id$
 C
-C COPYRIGHT (C) 1999, MCNC--North Carolina Supercomputing Center
+C COPYRIGHT (C) 2002, MCNC--Environmental Modeling Center
 C All Rights Reserved
 C
 C See file COPYRIGHT for conditions of use.
@@ -32,7 +32,7 @@ C MCNC--North Carolina Supercomputing Center
 C P.O. Box 12889
 C Research Triangle Park, NC  27709-2889
 C
-C env_progs@mcnc.org
+C smoke@emc.mcnc.org
 C
 C Pathname: $Source$
 C Last updated: $Date$ 
@@ -54,10 +54,10 @@ C.........  SUBROUTINE ARGUMENTS
         CHARACTER(*), INTENT (IN) :: NAMES( NLIST ) !  pollutant names
 
 C...........   Other local variables
-        INTEGER       I, L0, L1, L2
+        INTEGER       I, J, L0, L1, L2
         INTEGER       LCNT              ! length count
 
-        CHARACTER*1000 :: MESG           !  message buffer
+        CHARACTER*1024 :: MESG           !  message buffer
         CHARACTER*20   :: SPACE = ' '
 
         CHARACTER*16 :: PROGNAME = 'POLMESG' !  program name
@@ -96,9 +96,18 @@ C.........  Initialize length of initial message
 
             END IF
 
-        ENDDO
+        END DO
 
-        CALL M3MSG2( MESG )
+C........  Ensure that M3MSG2 is called with 256 characters or
+C          less, even if MESG is longer than that.  This will put
+C          unneeded spaces in the message.
+        L1 = LEN_TRIM( MESG )
+        DO I = 1, L1, 256
+
+            J = (I-1)*256 
+            CALL M3MSG2( MESG( J+1:MIN( J+256,L1 ) ) )
+
+        END DO
 
         RETURN
 
