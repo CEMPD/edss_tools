@@ -176,7 +176,7 @@ C.........  Get value of Models-3 environment variable for grid and check
 C           exit status
         IF ( FIRSTIME ) THEN
             MESG = 'Checking for defined environment variable'
-            CALL ENVSTR( 'GRIDDESC', MESG, ' ', LNAME, IOS )
+            CALL ENVSTR( 'GRIDDESC', MESG, ' ', BUFFER, IOS )
             IF ( IOS .EQ. 0 ) THEN
                 LNAME = 'GRIDDESC'
             ELSE
