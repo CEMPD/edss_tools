@@ -25,7 +25,7 @@ C Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
 C                System
 C File: @(#)$Id$
 C
-C COPYRIGHT (C) 1999, MCNC--North Carolina Supercomputing Center
+C COPYRIGHT (C) 2000, MCNC--North Carolina Supercomputing Center
 C All Rights Reserved
 C
 C See file COPYRIGHT for conditions of use.
@@ -38,7 +38,7 @@ C
 C env_progs@mcnc.org
 C
 C Pathname: $Source$
-C Last updated: $Date$ 
+C Last updated: $Date$
 C
 C****************************************************************************
 
@@ -178,19 +178,27 @@ C           values as defaults
 C.........  Assuming NSTEPS is requested by the calling program...
 C.........  Recompute number of steps assuming 1 hour time steps
         IF( NSTEPS .GT. 0 ) THEN
-            NSTEPS = SECSDIFF( SDATE, STIME, EDATE, ETIME ) / 3600 
+            N = SECSDIFF( SDATE, STIME, EDATE, ETIME ) / 3600 
 
 C.............  Double check the number of time steps to ensure that the input 
 C               files are not out of range from the environment settings
-            IF( NSTEPS .LE. 0 ) THEN
+            IF( N .LE. 0 ) THEN
                 MESG= 'Date/time from input file(s) are inconsistent '//
      &                'with the environment ' // CRLF() // BLANK10 //
      &                'episode settings.' 
                 CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
             END IF
 
-            NSTEPS= GETNUM( 1, NSTEPS, NSTEPS,
+            NSTEPS= GETNUM( 1, G_NSTEPS, N,
      &                      'Enter output duration (hours)' )
+
+            IF ( NSTEPS > N ) THEN
+                 MESG= 'Number of time steps selected is most '//
+     &                 'likely greater than those available ' //
+     &                 'from input data.'
+                 CALL M3WARN( PROGNAME, 0, 0, MESG ) 
+            ENDIF
+
         END IF
 
 C.........  Get date buffer field
