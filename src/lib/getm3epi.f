@@ -247,10 +247,10 @@ C...........   Internal buffering formats.............94xxx
 94010   FORMAT( 10( A, :, I6, :, 2X ) )
 
 94050   FORMAT( A, 1X, I2.2, A, 1X, A, 1X, I6.6, 1X,
-     &          A, 1X, I3.3, 1X, A, 1X, I3.3, 1X, A   )
+     &          A, 1X, I5.3, 1X, A, 1X, I5.3, 1X, A   )
 
 94052   FORMAT( A, 1X, A, 1X, I6.6, 1X,
-     &          A, 1X, I3.3, 1X, A, 1X, I3.3, 1X, A   )
+     &          A, 1X, I5.3, 1X, A, 1X, I5.3, 1X, A   )
 
 
         END SUBROUTINE GETM3EPI
