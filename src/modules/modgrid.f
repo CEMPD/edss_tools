@@ -21,7 +21,7 @@
 !                System
 ! File: @(#)$Id$ 
 !
-! COPYRIGHT (C) 2000, MCNC--North Carolina Supercomputing Center
+! COPYRIGHT (C) 2001, MCNC--North Carolina Supercomputing Center
 ! All Rights Reserved
 !
 ! See file COPYRIGHT for conditions of use.
@@ -57,6 +57,8 @@ C...........   INCLUDES:
         INTEGER, PUBLIC :: NCOLS = 0      ! number of columns in grid
         INTEGER, PUBLIC :: NROWS = 0      ! number of rows in grid
         INTEGER, PUBLIC :: NGRID = 0      ! number of cells in grid
+        INTEGER, PUBLIC :: XDIFF = 0      ! subgrid fewer cols (nxsub = nx - xdiff)
+        INTEGER, PUBLIC :: YDIFF = 0      ! subgrid fewer cols (nysub = ny - ydiff)
         INTEGER, PUBLIC :: XOFF  = 0      ! subgrid offset (x-sub = x - xoff)
         INTEGER, PUBLIC :: YOFF  = 0      ! subgrid offset
         INTEGER, PUBLIC :: XOFF_A= 0      ! tmp subgrid offset (x-sub = x - xoff)
