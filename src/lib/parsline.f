@@ -64,7 +64,7 @@ C...........   Array of 1-char strings for processing
         CHARACTER*1   ARRSTR( 5120 )  ! 256 * 20
 
 C...........  Arrays for sorting non-delimiters on a per-machine basis
-        INTEGER              NDINDX  ( NDELIM )
+        INTEGERE             NDINDX  ( NDELIM )
         CHARACTER*1, SAVE :: DELIMSRT( NDELIM )
 
 C...........   Other local variables
@@ -74,7 +74,7 @@ C...........   Other local variables
 
         LOGICAL      :: ALPHA            !  true when within alpha-numeric 
         LOGICAL      :: DELIM            !  true when within or past delimiter 
-        LOGICAL      :: FIRSTIME = .TRUE.!  true first time routine is called
+        LOGICAL, SAVE:: FIRSTIME = .TRUE.!  true first time routine is called
         LOGICAL      :: PREVDELIM = .TRUE. !  true when last char was a delim
         LOGICAL      :: NUMBER           !  true when within number in string 
         LOGICAL      :: QUOTED           !  true when within quotes in string
