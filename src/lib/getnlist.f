@@ -71,6 +71,7 @@ C...........   Other local variables
         LOGICAL      :: ALPHA            !  true when within alpha-numeric 
         LOGICAL      :: DELIM            !  true when within or past delimiter 
         LOGICAL      :: FIRSTIME = .TRUE.!  true first time routine is called
+        LOGICAL      :: PREVDELIM = .TRUE. !  true when last char was a delim
         LOGICAL      :: NUMBER           !  true when within number in string 
         LOGICAL      :: QUOTED           !  true when within quotes in string
         LOGICAL      :: THISNMBR         !  true when current iteration is numbr
@@ -147,6 +148,7 @@ C.............  Waiting for next field...
                     QUOTED  = .TRUE.
                     DELIM   = .FALSE.
                     QUOTVAL = SINGLEQ
+                    PREVDELIM = .FALSE.
                     L1     = I + 1
                     NCNT    = NCNT + 1
 
@@ -154,20 +156,33 @@ C.............  Waiting for next field...
                     QUOTED  = .TRUE.
                     DELIM   = .FALSE.
                     QUOTVAL = DOUBLEQ
+                    PREVDELIM = .FALSE.
                     L1      = I + 1
                     NCNT    = NCNT + 1
 
                 ELSE IF( ALPHA ) THEN
                     DELIM = .FALSE.
+                    PREVDELIM = .FALSE.
                     L1    = I
                     NCNT  = NCNT + 1
 
                 ELSE IF( NUMBER ) THEN
                     DELIM  = .FALSE.
+                    PREVDELIM = .FALSE.
                     L1     = I
                     NCNT   = NCNT + 1
 
-                END IF  ! Else its another delimiter
+C...............  If another delimeter, then another field, but last
+C                 field was blank UNLESS delim is a space
+                ELSE IF( CBUF .NE. DELIMLST( 2 ) ) THEN
+                    
+                    IF( PREVDELIM ) THEN
+                        NCNT = NCNT + 1
+                    ELSE
+                        PREVDELIM = .TRUE.
+                    END IF
+
+                END IF  ! Else its a space delimiter
 
 C.............  In a quoted field, skip everything unless it is an end quote
             ELSE IF( QUOTED ) THEN
@@ -175,6 +190,7 @@ C.............  In a quoted field, skip everything unless it is an end quote
                 IF( CBUF .EQ. QUOTVAL ) THEN
                     QUOTED  = .FALSE.
                     DELIM   = .TRUE.
+                    PREVDELIM = .FALSE.
                     L2      = I - 1
                   
                 END IF
@@ -191,6 +207,7 @@ C               delimiter, then end of number has been reached
                 ALPHA = .FALSE.
                 NUMBER = .FALSE.
                 DELIM  = .TRUE.
+                PREVDELIM = .TRUE.
                 L2     = I - 1
 
             END IF
