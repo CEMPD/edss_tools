@@ -190,6 +190,18 @@ C.............  Convert units to SMOKE notation
                 BUFFER = 'moles'
             CASE( 'gm moles' )  
                 BUFFER = 'moles'
+            CASE( 'gm-mole' )   
+                BUFFER = 'moles'
+            CASE( 'gm-moles' )   
+                BUFFER = 'moles'
+            CASE( 'g mole' )   
+                BUFFER = 'moles'
+            CASE( 'g moles' )  
+                BUFFER = 'moles'
+            CASE( 'g-mole' )   
+                BUFFER = 'moles'
+            CASE( 'g-moles' )   
+                BUFFER = 'moles'
             CASE( 'years' )     
                 BUFFER = 'yr'
             CASE( 'year' )      
