@@ -53,9 +53,8 @@ C...........   ARGUMENTS and their descriptions:
 C...........   EXTERNAL FUNCTIONS:
         CHARACTER*2  CRLF
         INTEGER      STR2INT
-        INTEGER      TRIMLEN
 
-        EXTERNAL     CRLF, STR2INT, TRIMLEN
+        EXTERNAL     CRLF, STR2INT
 
 C...........   LOCAL VARIABLES their descriptions:
 
@@ -74,10 +73,10 @@ C***********************************************************************
 C   begin body of subroutine GETCFDSC
 
 C.........  Ensure left-justified keyword
-        L1 = TRIMLEN( KEY )
+        L1 = LEN_TRIM( KEY )
         BUFFER = ADJUSTL( KEY( 1:L1 ) )
 
-        L1 = TRIMLEN( BUFFER )
+        L1 = LEN_TRIM( BUFFER )
 
 C.........  Get length of function
         LENGTH = LEN( GETCFDSC )
@@ -88,16 +87,16 @@ C.........  Get length of function
 
             IF( K .GT. 0 ) THEN
                 
-                L2 = TRIMLEN( FILEINFO( I ) )
+                L2 = MAX( K+L1, LEN_TRIM( FILEINFO( I ) ) )
                 CVAL = FILEINFO( I )( K+L1:L2 )
 
-                L2 = TRIMLEN( CVAL )
+                L2 = LEN_TRIM( CVAL )
 
                 IF( L2 .GT. LENGTH ) THEN
                     WRITE( MESG,94010 )
      &                     'INTERNAL WARNING: Length of string used ' //
      &                     'to call function "' //
-     &                     PROGNAME( 1:TRIMLEN( PROGNAME ) ) // '"' //
+     &                     PROGNAME( 1:LEN_TRIM( PROGNAME ) ) // '"' //
      &                     CRLF() // BLANK16 //
      &                     'is not long enough. Needs to be at least',
      &                     LENGTH, '. Trimming FDESC3D entry.'
