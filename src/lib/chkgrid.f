@@ -75,6 +75,8 @@ C...........   Local variables
 
         REAL(8)       CHK_X   ! tmp val for checking subgrid even with grid
         REAL(8)       CHK_Y   ! tmp val for checking subgrid even with grid
+        REAL(8)       X0      ! tmp x origin
+        REAL(8)       Y0      ! tmp y origin
 
         LOGICAL, SAVE :: GFLAG  = .FALSE. ! true: grid settings have been init
         LOGICAL       :: SFLAG  = .FALSE. ! true: local error
@@ -91,6 +93,9 @@ C.............  Initialize local error flag
         SFLAG = .FALSE.
 
 C.............  Set tmp rows, columns, and total cells depending on file type
+        X0 = XORIG3D
+        Y0 = YORIG3D
+
         IF( FTYPE .EQ. 'GMAT' ) THEN
             NC = GETIFDSC( FDESC3D, '/NCOLS3D/', .TRUE. )
             NR = GETIFDSC( FDESC3D, '/NROWS3D/', .TRUE. )
@@ -121,6 +126,13 @@ C.............  Set tmp rows, columns, and total cells depending on file type
             NR = NROWS3D
             FILDESC = 'landuse file'
 
+        ELSEIF( FTYPE .EQ. 'DOT' ) THEN
+            NC = NCOLS3D - 1
+            NR = NROWS3D - 1
+            X0 = XORIG3D + 0.5 * XCELL3D
+            Y0 = YORIG3D + 0.5 * YCELL3D
+            FILDESC = 'dot-gridded file'
+
         ELSE
             MESG = 'INTERNAL ERROR: File type "' // FTYPE // 
      &              '" not known in call to ' // PROGNAME
@@ -138,10 +150,10 @@ C               existing to this file.
 C.............  Check settings that must be consistent for exact grid match
             IF( CHKLEVEL .EQ. CHK_ALL ) THEN
 
-                IF ( NCOLS .NE. NC      .OR.
-     &               NROWS .NE. NR      .OR.
-     &               DBLERR( XORIG, XORIG3D ) .OR.
-     &               DBLERR( YORIG, YORIG3D )      ) THEN
+                IF ( NCOLS .NE. NC       .OR.
+     &               NROWS .NE. NR       .OR.
+     &               DBLERR( XORIG, X0 ) .OR.
+     &               DBLERR( YORIG, Y0 )      ) THEN
 
                     SFLAG = .TRUE.
                     MESG = 'ERROR: Columns, rows, x-origin, or ' //
@@ -180,9 +192,9 @@ C.............  Check settings that must be consistent for grids and subgrids
 
 C.................  Ensure that origins are compatible with each other by
 C                   making sure they line up based on the cell sizes
-                CHK_X  = ( XORIG3D - XORIG ) / XCELL
+                CHK_X  = ( X0 - XORIG ) / XCELL
                 CHK_X  = CHK_X - INT( CHK_X )
-                CHK_Y  = ( YORIG3D - YORIG ) / YCELL
+                CHK_Y  = ( Y0 - YORIG ) / YCELL
                 CHK_Y  = CHK_Y - INT( CHK_Y )
                 IF( DBLERR( CHK_X, 0.D0 ) .OR.
      &              DBLERR( CHK_Y, 0.D0 )      ) THEN
@@ -200,11 +212,11 @@ C.................  If offset has been set, then check to ensure its the same
                 IF( OFFLAG ) THEN
 
 C.....................  If file has different origin from the subgrid...
-                    IF( XORIG3D .NE. XORIG .OR. 
-     &                  YORIG3D .NE. YORIG       ) THEN
+                    IF( X0 .NE. XORIG .OR. 
+     &                  Y0 .NE. YORIG       ) THEN
 
-                        XO = INT( ( XORIG3D - XORIG ) / XCELL )
-                        YO = INT( ( YORIG3D - YORIG ) / YCELL )
+                        XO = INT( ( X0 - XORIG ) / XCELL )
+                        YO = INT( ( Y0 - YORIG ) / YCELL )
                         IF( XOFF .NE. XO .OR.
      &                      YOFF .NE. YO      ) THEN
 
@@ -223,10 +235,10 @@ C.....................  If file has same origin as subgrid
 
 C.........................  Check that current subgrid is the same as the 
 C                           previous subgrid
-                        IF ( NCOLS .NE. NC      .OR.
-     &                       NROWS .NE. NR      .OR.
-     &                       DBLERR( XORIG, XORIG3D ) .OR.
-     &                       DBLERR( YORIG, YORIG3D )      ) THEN
+                        IF ( NCOLS .NE. NC       .OR.
+     &                       NROWS .NE. NR       .OR.
+     &                       DBLERR( XORIG, X0 ) .OR.
+     &                       DBLERR( YORIG, Y0 )      ) THEN
 
                              SFLAG = .TRUE.
                              MESG = 'ERROR: Columns, rows, x-origin, '//
@@ -245,15 +257,15 @@ C.................  If offset for final subgrid hasn't been set yet...
 
 C.....................  Compute possible offset from upper right hand corner,
 C                       and if there is one, set flag
-                    XOFF_A = INT( ( XORIG  + NCOLS * XCELL   ) - 
-     &                            ( XORIG3D+ NC    * XCELL3D ) ) / XCELL
-                    YOFF_A = INT( ( YORIG  + NROWS * YCELL   ) - 
-     &                            ( YORIG3D+ NR    * YCELL3D ) ) / YCELL
+                    XOFF_A = INT( ( XORIG + NCOLS * XCELL   ) - 
+     &                            ( X0    + NC    * XCELL3D ) ) / XCELL
+                    YOFF_A = INT( ( YORIG + NROWS * YCELL   ) - 
+     &                            ( Y0    + NR    * YCELL3D ) ) / YCELL
 
 C.....................  Compute possible offset from origin, and if there is 
 C                       one, set flag
-                    XOFF_A = INT( ( XORIG3D - XORIG ) / XCELL )
-                    YOFF_A = INT( ( YORIG3D - YORIG ) / YCELL )
+                    XOFF_A = INT( ( X0 - XORIG ) / XCELL )
+                    YOFF_A = INT( ( Y0 - YORIG ) / YCELL )
                     
 C.....................  Reset origin and number of cells to latest grid
                     GRDNM = GDNAM3D
@@ -267,8 +279,8 @@ C                       not temporary
      &                      OFFLAG = .TRUE.
                         XDIFF = NCOLS - NC
                         YDIFF = NROWS - NR
-                        XORIG = XORIG3D
-                        YORIG = YORIG3D
+                        XORIG = X0
+                        YORIG = Y0
                         NCOLS = NC
                         NROWS = NR
                         NGRID = NCOLS * NROWS
@@ -289,8 +301,8 @@ C.........  Initialize grid information
             P_GAM = P_GAM3D
             XCENT = XCENT3D
             YCENT = YCENT3D
-            XORIG = XORIG3D
-            YORIG = YORIG3D
+            XORIG = X0
+            YORIG = Y0
             XCELL = XCELL3D
             YCELL = YCELL3D
             NCOLS = NC
