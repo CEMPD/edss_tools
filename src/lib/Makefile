@@ -37,4 +37,4 @@ chkgrid.o: $(MODGRID) $(ETINC)/FLTERR.EXT
 	$(FC) $(FFLAGS) -c -o $@ chkgrid.f
 
 clean: 
-	/bin/rm -f *.o $(ETDSRC)/*.o $(ETDSRC)/*.mod $(ETDSRC)/*.M
+	/bin/rm -f *.o $(ETDSRC)/$(EDSS_EXE)/*.o $(ETDSRC)/$(EDSS_EXE)/*.mod $(ETDSRC)/$(EDSS_EXE)/*.M
