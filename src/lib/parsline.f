@@ -57,15 +57,9 @@ C...........   Local parameters
         INTEGER    , PARAMETER :: NDELIM = 4
         CHARACTER*1, PARAMETER :: DELIMLST( NDELIM ) = 
      &                         (/ ',', ' ', ';', '	' /)
-
-c        INTEGER, PARAMETER :: NXALP = 25
-c        CHARACTER*1, PARAMETER :: XALPLIST( NXALP ) =    ! non-delimiters
-c     &             ( / '~', '@', '#', '$', '%', '^', '&', '*', '(', 
-c     &                 ')', '-', '_', '+', '=', '{', '}', '[', ']',
-c     &                 '|', '\', '<', '>', '.', '?', '/' / )
              
 C...........   Array of 1-char strings for processing
-        CHARACTER*1   ARRSTR( 6000 )
+        CHARACTER*1   ARRSTR( 5120 )  ! 256 * 20
 
 C...........  Arrays for sorting non-delimiters on a per-machine basis
         INTEGER              NDINDX  ( NDELIM )
