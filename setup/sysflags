@@ -12,36 +12,36 @@ endif
 # Make directories for library, object files, and executables
 setenv    TOOLS_BIN "$TOOLS_ROOT/$EDSS_EXE"
 if( ! -e $TOOLS_BIN ) mkdir -p $TOOLS_BIN
-if( ! -e $IOMOD_SRC/$EDSS_EXE ) mkdir -p $IOMOD_SRC/$EDSS_EXE
+if( ! -e $ETDSRC/$EDSS_EXE ) mkdir -p $ETDSRC/$EDSS_EXE
 
 switch ( $EDSS_EXE )
   case IRIXn32f90:
   case IRIX6f90:
   case IRIXn64f90:
     setenv FC    f90
-    setenv FFLAGS   "$FFLAGS -I${IOINC} -I${IOMOD_SRC}/${EDSS_EXE}"
-    setenv DBGFLAGS "$DBGFLAGS -I${IOINC} -I${IOMOD_SRC}/${EDSS_EXE}" 
+    setenv FFLAGS   "$FFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
+    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}" 
     setenv LDIRS    "-L${TOOLS_BIN}"
     breaksw
   case SunOS5f90:
 #   NOTE: -Bstatic caused problems with ENVYN (perhaps because not
 #         using I/O API compiled with f90 ?)
     setenv FC    f90
-    setenv FFLAGS   "$FFLAGS -I${IOINC} -M${IOMOD_SRC}/${EDSS_EXE}"
-    setenv DBGFLAGS "$DBGFLAGS -I${IOINC} -M${IOMOD_SRC}/${EDSS_EXE}"
+    setenv FFLAGS   "$FFLAGS -I${ETINC} -I${IOINC} -M${ETDSRC}/${EDSS_EXE}"
+    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -M${ETDSRC}/${EDSS_EXE}"
     setenv LDIRS    "-L${TOOLS_BIN}"
     breaksw
 case HP_UX11f90:
     setenv FC  f90
-    setenv FFLAGS   "$FFLAGS  -I${IOINC} -I${IOMOD_SRC}/${EDSS_EXE}"
-    setenv DBGFLAGS "$DBGFLAGS -I${IOINC} -I${IOMOD_SRC}/${EDSS_EXE}"
+    setenv FFLAGS   "$FFLAGS  -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
+    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
     setenv LDIRS    "+U77 -Wl,-L,${TOOLS_BIN}"
     breaksw
 case AIX4n64f90:
 case AIX4f90:
     setenv FC  xlf
-    setenv FFLAGS   "$FFLAGS  -I${IOINC} -I${IOMOD_SRC}/${EDSS_EXE}"
-    setenv DBGFLAGS "$DBGFLAGS -I${IOINC} -I${IOMOD_SRC}/${EDSS_EXE}"
+    setenv FFLAGS   "$FFLAGS  -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
+    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
     setenv LDIRS    "-L${TOOLS_BIN} -lxlsmp"
     breaksw
 default:
