@@ -229,11 +229,11 @@ C.............  Parse the lower and upper case lines
                 CALL M3MSG2( MESG )
                 CYCLE 
             END IF
-
+c note: add allocatable array
             SEGMENT = ' '            
             UPCSGMT = ' '            
-            CALL PARSLINE( LINE   , L2, SEGMENT )
-            CALL PARSLINE( UPCLINE, L2, UPCSGMT )
+            CALL PARSLINE( LINE   , N, SEGMENT )
+            CALL PARSLINE( UPCLINE, N, UPCSGMT )
 
 C.............  Search for keywords.  If the keyword exists, extract the
 C               value(s) and cycle to the next line...
