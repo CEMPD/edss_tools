@@ -49,12 +49,12 @@ C...........   Local variables
 
         LOGICAL                FRACFLAG  ! true: units are a fraction
 
-        CHARACTER(LEN=IOULEN3) CNUM    ! tmp numerator
-        CHARACTER(LEN=IOULEN3) CDEN    ! tmp denominator (if any)
-        CHARACTER(LEN=IOULEN3) PREFIX1 ! tmp numerator prefix (if any)
-        CHARACTER(LEN=IOULEN3) PREFIX2 ! tmp denominator prefix (if any)
+        CHARACTER(IOULEN3) CNUM    ! tmp numerator
+        CHARACTER(IOULEN3) CDEN    ! tmp denominator (if any)
+        CHARACTER(IOULEN3) PREFIX1 ! tmp numerator prefix (if any)
+        CHARACTER(IOULEN3) PREFIX2 ! tmp denominator prefix (if any)
 
-        CHARACTER*16 :: PROGNAME = 'UNITMATCH' ! program name
+        CHARACTER(16) :: PROGNAME = 'UNITMATCH' ! program name
 
 C***********************************************************************
 C   begin body of subroutine UNITMATCH

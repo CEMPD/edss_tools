@@ -49,12 +49,12 @@ C...........   SUBROUTINE ARGUMENTS
 C...........   Other local variables
         INTEGER         K1, K2, L1, L2, LD1, LD2, LN1, LN2
 
-        CHARACTER(LEN=IOULEN3 ) :: DEN1 = ' '
-        CHARACTER(LEN=IOULEN3 ) :: DEN2 = ' '
-        CHARACTER(LEN=IOULEN3 ) :: NUM1 = ' '
-        CHARACTER(LEN=IOULEN3 ) :: NUM2 = ' '
+        CHARACTER(IOULEN3) :: DEN1 = ' '
+        CHARACTER(IOULEN3) :: DEN2 = ' '
+        CHARACTER(IOULEN3) :: NUM1 = ' '
+        CHARACTER(IOULEN3) :: NUM2 = ' '
 
-        CHARACTER*16 :: PROGNAME = 'MULTUNIT' ! program name
+        CHARACTER(16) :: PROGNAME = 'MULTUNIT' ! program name
 
 C***********************************************************************
 C   begin body of function MULTUNIT

@@ -45,7 +45,7 @@ C.........  INCLUDES:
 
 C...........   EXTERNAL FUNCTIONS and their descriptions:
         
-        CHARACTER*2  CRLF
+        CHARACTER(2) CRLF
         INTEGER      STR2INT
 
         EXTERNAL     CRLF, STR2INT
@@ -62,10 +62,10 @@ C...........   Other local variables
 
         REAL            PRECNV     ! Conversion for exponential prefixes
 
-        CHARACTER(LEN=IOULEN3 ) :: BUF1 = ' '
-        CHARACTER(LEN=IOULEN3 ) :: BUF2 = ' '
+        CHARACTER(IOULEN3) :: BUF1 = ' '
+        CHARACTER(IOULEN3) :: BUF2 = ' '
 
-        CHARACTER*16 :: PROGNAME = 'UNITFAC' ! program name
+        CHARACTER(16) :: PROGNAME = 'UNITFAC' ! program name
 
 C***********************************************************************
 C   begin body of function UNITFAC
@@ -336,7 +336,7 @@ C.............  Subprogram arguments
             REAL, INTENT (OUT) :: FACTOR
 
 C.............   Local variables
-            CHARACTER*300  MESG
+            CHARACTER(300) MESG
 
 C----------------------------------------------------------------------
 

@@ -37,7 +37,7 @@ C***************************************************************************
         IMPLICIT NONE
 
 C...........   SUBROUTINE ARGUMENTS
-        CHARACTER*(*), INTENT (IN OUT) :: STRING   ! input character string
+        CHARACTER(*), INTENT (IN OUT) :: STRING   ! input character string
 
 C...........   Other local variables
         INTEGER         K, L  ! counters and indices
@@ -47,10 +47,10 @@ C...........   Other local variables
         LOGICAL         PERDFLAG  ! true if already encountered a period in string
         LOGICAL         NEGVFLAG  ! true if already encountered a '-' in string
 
-        CHARACTER*1     CBUF 
-        CHARACTER*256   BUFFER 
+        CHARACTER       CBUF 
+        CHARACTER(256)  BUFFER 
 
-        CHARACTER*16 :: PROGNAME = 'CHKREAL' ! program name
+        CHARACTER(16) :: PROGNAME = 'CHKREAL' ! program name
 
 C***********************************************************************
 C   begin body of function CHKREAL

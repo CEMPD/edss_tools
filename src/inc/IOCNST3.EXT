@@ -2,9 +2,9 @@ C @(#)$Header$
 
 C.........   Output formatting parameters
 
-        CHARACTER*5 , PARAMETER :: BLANK5   = ' '
-        CHARACTER*10, PARAMETER :: BLANK10  = ' '
-        CHARACTER*16, PARAMETER :: BLANK16  = ' '
+        CHARACTER(5),  PARAMETER :: BLANK5   = ' '
+        CHARACTER(10), PARAMETER :: BLANK10  = ' '
+        CHARACTER(16), PARAMETER :: BLANK16  = ' '
 
 C.........   Physical constants and conversion factors
         REAL, PARAMETER :: DAY2SEC = 24. * 3600.  ! Days to seconds 
@@ -17,4 +17,4 @@ C.........   Physical constants and conversion factors
         REAL, PARAMETER :: GM2TON  = 1. / TON2GM  ! Grams to tons 
  
 C.........  Indicator for inventory header fields
-        CHARACTER*1, PARAMETER :: CINVHDR = '#'
+        CHARACTER, PARAMETER :: CINVHDR = '#'

@@ -40,12 +40,12 @@ C***************************************************************************
         IMPLICIT NONE
 
 C...........   SUBROUTINE ARGUMENTS
-        INTEGER           N                        ! length of the string to pad
-        CHARACTER(LEN=N), INTENT(IN OUT) :: STRING ! character string to adjust
+        INTEGER,      INTENT(IN)     :: N      ! length of the string to pad
+        CHARACTER(N), INTENT(IN OUT) :: STRING ! character string to adjust
 
         INTEGER         I, L
 
-        CHARACTER*16 :: PROGNAME = 'PADNZERO' ! program name
+        CHARACTER(16) :: PROGNAME = 'PADNZERO' ! program name
 
 C***********************************************************************
 C   begin body of subroutine PADZERO

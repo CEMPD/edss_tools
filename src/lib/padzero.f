@@ -40,11 +40,11 @@ C***************************************************************************
         IMPLICIT NONE
 
 C...........   SUBROUTINE ARGUMENTS
-        CHARACTER(LEN=*), INTENT(IN OUT) :: STRING ! character string to adjust
+        CHARACTER(*), INTENT(IN OUT) :: STRING ! character string to adjust
 
         INTEGER         I, L
 
-        CHARACTER*16 :: PROGNAME = 'PADZERO' ! program name
+        CHARACTER(16) :: PROGNAME = 'PADZERO' ! program name
 
 C***********************************************************************
 C   begin body of subroutine PADZERO

@@ -42,7 +42,7 @@ C...........   INCLUDES
         INCLUDE 'IOCNST3.EXT'   !  emissions constant parameters
 
 C...........   EXTERNAL FUNCTIONS and their descriptions:
-        CHARACTER*2  CRLF
+        CHARACTER(2) CRLF
         EXTERNAL     CRLF
 
 C.........  SUBROUTINE ARGUMENTS
@@ -53,10 +53,10 @@ C...........   Other local variables
         INTEGER       I, J, L0, L1, L2
         INTEGER       LCNT              ! length count
 
-        CHARACTER*5120 :: MESG           !  message buffer
-        CHARACTER*20   :: SPACE = ' '
+        CHARACTER(5120) :: MESG         !  message buffer
+        CHARACTER(20)   :: SPACE = ' '
 
-        CHARACTER*16 :: PROGNAME = 'POLMESG' !  program name
+        CHARACTER(16) :: PROGNAME = 'POLMESG' !  program name
 
 C***********************************************************************
 C   begin body of subroutine POLMESG

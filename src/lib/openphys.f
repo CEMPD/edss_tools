@@ -41,7 +41,7 @@ C...........   INCLUDES
         INCLUDE 'SETDECL.EXT'   !  FileSetAPI variables and functions
 
 C...........   EXTERNAL FUNCTIONS and their descriptions:
-        CHARACTER*2     CRLF
+        CHARACTER(2)    CRLF
         LOGICAL         SETENVVAR
 
         EXTERNAL        CRLF, SETENVVAR
@@ -54,9 +54,9 @@ C.........  SUBROUTINE ARGUMENTS
         LOGICAL     , INTENT(OUT) :: EFLAG     ! true: error occurred
 
 C.........  Other local variables
-        CHARACTER*256           MESG    !  message buffer
+        CHARACTER(256)          MESG    !  message buffer
 
-        CHARACTER*16 :: PROGNAME = 'OPENPHYS' ! program name
+        CHARACTER(16) :: PROGNAME = 'OPENPHYS' ! program name
 
 C***********************************************************************
 C   begin body of subroutine OPENPHYS

@@ -38,7 +38,7 @@ C***************************************************************************
 
 
 C...........   SUBROUTINE ARGUMENTS
-        CHARACTER*(*)   STRING   ! input character string
+        CHARACTER(*)   STRING   ! input character string
 
 C...........   Other local variables
         INTEGER         K, L  ! counters and indices
@@ -46,10 +46,10 @@ C...........   Other local variables
         LOGICAL         SPACFLAG  ! true if already encountered a space in string
         LOGICAL         NEGVFLAG  ! true if already encountered a '-' in string
 
-        CHARACTER*1     CBUF 
-        CHARACTER*256   BUFFER 
+        CHARACTER       CBUF 
+        CHARACTER(256)  BUFFER 
 
-        CHARACTER*16 :: PROGNAME = 'CHKINT' ! program name
+        CHARACTER(16) :: PROGNAME = 'CHKINT' ! program name
 
 C***********************************************************************
 C   begin body of function CHKINT

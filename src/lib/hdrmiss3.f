@@ -41,7 +41,7 @@ C...........   INCLUDES:
         INCLUDE 'PARMS3.EXT'    !  I/O API parameters
         INCLUDE 'FDESC3.EXT'    !  I/O API file description data structures.
 
-        CHARACTER*16 :: PROGNAME = 'HDRMISS3'    ! Program name
+        CHARACTER(16) :: PROGNAME = 'HDRMISS3'    ! Program name
 
 C***********************************************************************
 C   begin body of subroutine HDRMISS3

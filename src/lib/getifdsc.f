@@ -61,10 +61,10 @@ C...........   LOCAL VARIABLES their descriptions:
         INTEGER       IVAL         ! temporary integer value
         INTEGER       K            ! description string position of key
 
-        CHARACTER*300 BUFFER       ! Key buffer
-        CHARACTER*300 MESG         ! Message buffer
+        CHARACTER(300) BUFFER      ! Key buffer
+        CHARACTER(300) MESG        ! Message buffer
 
-        CHARACTER*16 :: PROGNAME = 'GETIFDSC'    ! Program name
+        CHARACTER(16) :: PROGNAME = 'GETIFDSC'    ! Program name
 
 C***********************************************************************
 C   begin body of function GETIFDSC

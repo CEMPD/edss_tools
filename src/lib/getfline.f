@@ -40,7 +40,7 @@ C****************************************************************************
 C...........   ARGUMENTS and their descriptions:
 
         INTEGER       IDEV         ! Unit number for ASCII file
-        CHARACTER*(*) DESCRIPT     ! Description of file
+        CHARACTER(*)  DESCRIPT     ! Description of file
 
 C...........   EXTERNAL FUNCTIONS:
         INTEGER    TRIMLEN
@@ -53,10 +53,10 @@ C...........   LOCAL VARIABLES their descriptions:
         INTEGER       ICNT         ! line counter
         INTEGER       IOS          ! i/o status
 
-        CHARACTER*1   BUFFER       ! ASCII LINE from X-ref file
-        CHARACTER*256 MESG         ! Message buffer
+        CHARACTER      BUFFER      ! ASCII LINE from X-ref file
+        CHARACTER(256) MESG        ! Message buffer
 
-        CHARACTER*16 :: PROGNAME = 'GETFLINE' ! program name
+        CHARACTER(16) :: PROGNAME = 'GETFLINE' ! program name
 
 C***********************************************************************
 C   begin body of subroutine GETFLINE

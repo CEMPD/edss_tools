@@ -51,7 +51,7 @@ C........  Other local variables
        INTEGER              HDRSIZE    ! size of header in bytes
        INTEGER              RECSIZE    ! size of single record in bytes
 
-       CHARACTER(LEN=16) :: PROGNAME = 'IOAPI_GRD_SIZE'  ! program name
+       CHARACTER(16) :: PROGNAME = 'IOAPI_GRD_SIZE'  ! program name
 
 C***********************************************************************
 C   begin body of function IOAPI_GRD_SIZE

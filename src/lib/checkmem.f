@@ -39,8 +39,8 @@ C***************************************************************************
 C...........   ARGUMENTS and their descriptions:
 
        INTEGER       MSTATUS !  ALLOCATE function exit status
-       CHARACTER*(*) ONVAR   !  Variable name of previous ALLOCATE statement
-       CHARACTER*(*) CALLER  !  Name of calling program
+       CHARACTER(*)  ONVAR   !  Variable name of previous ALLOCATE statement
+       CHARACTER(*)  CALLER  !  Name of calling program
 
 C...........   ARGUMENTS and their descriptions:
        INTEGER      TRIMLEN
@@ -50,9 +50,9 @@ C...........   Local variables
 
        INTEGER         L1
        INTEGER         L2
-       CHARACTER*256   MESG
+       CHARACTER(256)  MESG
 
-       CHARACTER*16 :: PROGNAME = 'CHECKMEM' ! program name
+       CHARACTER(16) :: PROGNAME = 'CHECKMEM' ! program name
 
 C***********************************************************************
 C   begin body of function CHECKMEM

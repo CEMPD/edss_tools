@@ -1,5 +1,5 @@
 
-        CHARACTER*(*) FUNCTION GETCFDSC( FILEINFO, KEY, REQUIRED )
+        CHARACTER(*) FUNCTION GETCFDSC( FILEINFO, KEY, REQUIRED )
 
 C***********************************************************************
 C  function body starts at line
@@ -48,7 +48,7 @@ C...........   ARGUMENTS and their descriptions:
         LOGICAL     , INTENT (IN) :: REQUIRED      ! true: key must be found
 
 C...........   EXTERNAL FUNCTIONS:
-        CHARACTER*2  CRLF
+        CHARACTER(2) CRLF
         INTEGER      STR2INT
 
         EXTERNAL     CRLF, STR2INT
@@ -60,11 +60,11 @@ C...........   LOCAL VARIABLES their descriptions:
         INTEGER       K            ! description string position of key
         INTEGER       LENGTH       ! length of function
 
-        CHARACTER*300 CVAL         ! temporary output buffer
-        CHARACTER*300 BUFFER       ! key buffer
-        CHARACTER*300 MESG         ! message buffer
+        CHARACTER(300) CVAL        ! temporary output buffer
+        CHARACTER(300) BUFFER      ! key buffer
+        CHARACTER(300) MESG        ! message buffer
 
-        CHARACTER*16 :: PROGNAME = 'GETCFDSC'    ! Program name
+        CHARACTER(16) :: PROGNAME = 'GETCFDSC'    ! Program name
 
 C***********************************************************************
 C   begin body of subroutine GETCFDSC

@@ -52,11 +52,11 @@ C...........   ARGUMENTS and their descriptions:
         INTEGER, INTENT(IN OUT) :: NSTEPS    ! Number of time steps
      
 C...........   EXTERNAL FUNCTIONS:
-        CHARACTER*2     CRLF
+        CHARACTER(2)    CRLF
         INTEGER         ENVINT  
         INTEGER         GETDATE  
         INTEGER         GETNUM  
-        CHARACTER*14    MMDDYY
+        CHARACTER(14)   MMDDYY
         INTEGER         SECSDIFF
         INTEGER         STR2INT
 
@@ -79,10 +79,10 @@ C...........   LOCAL VARIABLES their descriptions:
         INTEGER       L            ! tmp string length
         INTEGER       N            ! tmp duration HHMMSS 
 
-        CHARACTER*300 MESG         ! Message buffer
-
-        CHARACTER*14    DTBUF        ! date buffer
-        CHARACTER*16 :: PROGNAME = 'GETM3EPI'    ! Program name
+        CHARACTER(300) MESG        ! Message buffer
+        CHARACTER(14)  DTBUF       ! date buffer
+        
+        CHARACTER(16) :: PROGNAME = 'GETM3EPI'    ! Program name
 
 C***********************************************************************
 C   begin body of subroutine GETM3EPI

@@ -46,19 +46,19 @@ C...........   EXTERNAL FUNCTIONS
 
 C...........   SUBROUTINE ARGUMENTS
         INTEGER       ILENGTH     !  length of string
-        CHARACTER*(*) STRING      !  description of source category
+        CHARACTER(*)  STRING      !  description of source category
 
 C...........   Local parameters
-        INTEGER    , PARAMETER :: NDELIM = 4
-        CHARACTER*1, PARAMETER :: DELIMLST( NDELIM ) = 
+        INTEGER,   PARAMETER :: NDELIM = 4
+        CHARACTER, PARAMETER :: DELIMLST( NDELIM ) = 
      &                         (/ ',', ' ', ';', '	' /)
              
 C...........   Array of 1-char strings for processing
-        CHARACTER*1   ARRSTR( 5120 )  ! 256 * 20
+        CHARACTER     ARRSTR( 5120 )  ! 256 * 20
 
 C...........  Arrays for sorting non-delimiters on a per-machine basis
-        INTEGER              NDINDX  ( NDELIM )
-        CHARACTER*1, SAVE :: DELIMSRT( NDELIM )
+        INTEGER            NDINDX  ( NDELIM )
+        CHARACTER, SAVE :: DELIMSRT( NDELIM )
 
 C...........   Other local variables
         INTEGER         I, J, L, L1, L2  !  counters and indices
@@ -73,15 +73,15 @@ C...........   Other local variables
         LOGICAL      :: QUOTED           !  true when within quotes in string
         LOGICAL      :: THISNMBR         !  true when current iteration is numbr
 
-        CHARACTER*1     CBUF             !  temporary buffer
-        CHARACTER*1  :: DOUBLEQ = '"'
-        CHARACTER*1  :: SINGLEQ = "'"  
-        CHARACTER*1  :: PERIOD  = '.' 
-        CHARACTER*1     QUOTVAL          !  value of starting quote 
+        CHARACTER       CBUF             !  temporary buffer
+        CHARACTER    :: DOUBLEQ = '"'
+        CHARACTER    :: SINGLEQ = "'"  
+        CHARACTER    :: PERIOD  = '.' 
+        CHARACTER       QUOTVAL          !  value of starting quote 
 
-        CHARACTER*300   MESG             ! message buffer
+        CHARACTER(300)  MESG             ! message buffer
 
-        CHARACTER*16 :: PROGNAME = 'GETNLIST' ! program name
+        CHARACTER(16) :: PROGNAME = 'GETNLIST' ! program name
 
 C***********************************************************************
 C   begin body of function GETNLIST
