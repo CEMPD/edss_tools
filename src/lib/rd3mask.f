@@ -1,6 +1,6 @@
 
-        SUBROUTINE RD3MASK( FNAME, JDATE, JTIME, NDIM, NVLIST, VNAMES, 
-     &                      VINDX, OUTVAR )
+        SUBROUTINE RD3MASK( FNAME, JDATE, JTIME, NDIM, NDIM2, NVLIST, 
+     &                      VNAMES, VINDX, OUTVAR )
 
 C***********************************************************************
 C  subroutine body starts at line
@@ -60,10 +60,11 @@ C.........  SUBROUTINE ARGUMENTS
         INTEGER     , INTENT (IN) :: JDATE     ! Julian date (YYYYDDD)
         INTEGER     , INTENT (IN) :: JTIME     ! time (HHMMSS)
         INTEGER     , INTENT (IN) :: NDIM      ! dimension for output array
+        INTEGER     , INTENT (IN) :: NDIM2     ! 2nd dimension for output array
         INTEGER     , INTENT (IN) :: NVLIST    ! variable description to read
         CHARACTER(*), INTENT (IN) :: VNAMES( NVLIST ) ! variable names
         INTEGER     , INTENT (IN) :: VINDX ( NVLIST ) ! var index to OUTVAR
-        REAL        , INTENT(OUT) :: OUTVAR( NDIM,* ) ! coeffs for sources
+        REAL        , INTENT(OUT) :: OUTVAR( NDIM,NDIM2 ) ! coeffs for sources
 
 C.........  Other local variables
         INTEGER         J, L, L1, V       !  counters and indices
@@ -82,6 +83,16 @@ C.........  Loop through variables that are possibilities for reading
 C.............  Check variable index to see if this variable is to be read
             J = VINDX( V ) 
             IF( J .EQ. 0 ) CYCLE  ! to go bottom of loop
+
+C.............  Bounds check
+            IF( J .GT. NDIM2 ) THEN
+
+                MESG = 'INTERNAL ERROR: Prevented overflow for read '//
+     &                 'of variable "' // TRIM( VBUF ) // '"'
+                CALL M3MSG2( MESG )
+                CALL M3EXIT( PROGNAME, 0, 0, ' ', 2 )
+
+            END IF
 
 C.............  Read variable and print nice error message if cannot
             VBUF = VNAMES( V )
