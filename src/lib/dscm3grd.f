@@ -19,6 +19,7 @@ C       I/O API routines DSCGRID()
 C
 C  REVISION  HISTORY:
 C     Copied and modified from DSCGRID, version 12/16/97
+C     Added POLGRD3 as a supported coord sys type - E. Giroux CNRC 03/2004
 C
 C**************************************************************************
 C
@@ -82,7 +83,7 @@ C...........   EXTERNAL FUNCTIONS:
      &               INDEX1, JUNIT, STR2INT, STR2REAL
         
 C...........   Local parameters
-        INTEGER, PARAMETER :: MXGRDTYP = 11
+        INTEGER, PARAMETER :: MXGRDTYP = 13
 
 C...........   Grid types and names arrays
         INTEGER      :: GRDTYPES( MXGRDTYP ) = ( / LATGRD3
@@ -94,6 +95,8 @@ C...........   Grid types and names arrays
      &                                           , MERGRD3
      &                                           , STEGRD3
      &                                           , STEGRD3
+     &                                           , POLGRD3
+     &                                           , POLGRD3
      &                                           , UTMGRD3
      &                                           , UTMGRD3 / )
 
@@ -106,6 +109,8 @@ C...........   Grid types and names arrays
      &                                           , 'MERGRD3        '
      &                                           , 'STEREOGRAPHIC  '
      &                                           , 'STEGRD3        '
+     &                                           , 'POLAR          '
+     &                                           , 'POLGRD3        '
      &                                           , 'UTM            '
      &                                           , 'UTMGRD3        ' / )
 
