@@ -120,7 +120,7 @@ C              this caused unexplainable crashing on SGI).
 
 C...........   File units and logical/physical names:
         INTEGER, SAVE :: IDEV    !  unit number of grid information file
-        CHARACTER*16     LNAME   !  logical name for grid information file
+        CHARACTER*16, SAVE :: LNAME !  logical name for grid information file
 
 C...........   Scratch local variables and their descriptions:
             
@@ -174,7 +174,16 @@ C   begin body of function DSCM3GRD
 
 C.........  Get value of Models-3 environment variable for grid and check
 C           exit status
-        LNAME = 'GRIDDESC'
+        IF ( FIRSTIME ) THEN
+            MESG = 'Checking for defined environment variable'
+            CALL ENVSTR( 'GRIDDESC', MESG, ' ', LNAME, IOS )
+            IF ( IOS .EQ. 0 ) THEN
+                LNAME = 'GRIDDESC'
+            ELSE
+                LNAME = 'G_GRIDPATH'
+            END IF
+            FIRSTIME = .FALSE.
+        END IF
 
 C.........  Try to read G_GRIDPATH file the first time or skip 
 C           if we know this is a GRIDDESC file
