@@ -1,7 +1,13 @@
+C***********************************************************************
+C  Copied from I/O API v2.2 m3msg2.F
+C  I/O API m3mesg.f doesn't only write to log file like it should
+C***********************************************************************
 
 C.........................................................................
 C Version "@(#)$Header$"
-C EDSS/Models-3 I/O API.  Copyright (C) 1992-1999 MCNC
+C EDSS/Models-3 I/O API.
+C Copyright (C) 1992-2002 MCNC and Carlie J. Coats, Jr., and
+C (C) 2003 Baron Advanced Meteorological Systems
 C Distributed under the GNU LESSER GENERAL PUBLIC LICENSE version 2.1
 C See file "LGPL.txt" for conditions of use.
 C.........................................................................
@@ -9,20 +15,28 @@ C.........................................................................
         SUBROUTINE  M3MESG( MESSAGE )
 
 C***********************************************************************
-C  subroutine body starts at line  56
+C  Subroutine body starts at line   79
 C
-C  FUNCTION:  Generate simple (1-line text) messages for Models-3.
+C  FUNCTION:
+C       Generate simple (1-line text) messages and prompts for Models-3;
+C       wrapper around FLUSH() -- needed for IBM XLF.
 C
 C  PRECONDITIONS REQUIRED:  
 C       message fits on one line
 C
-C  SUBROUTINES AND FUNCTIONS CALLED:  INIT3, TRIMLEN
+C  SUBROUTINES AND FUNCTIONS CALLED:
+C       INIT3, TRIMLEN
 C
 C  REVISION  HISTORY:   
-C       prototype 5/92 by CJC
-C       Version  10/95 by CJC uses TRIMLEN()
-C       Modified  5/98 by CJC for OpenMP thread-safety:  becomes a wrapper
-C       around M3MSG2
+C       Adapted   1/1997 by CJC from M3MESG()
+C       Modified  5/1998 by CJC for OpenMP thread-safety
+C       Modified 10/1999 by CJC for AIX "flush"
+C       Modified  5/2003 by CJC for control of optional messages via
+C       STATE3 variable STDOUT; changes to critical sections.
+C       Modified  6/2003 by CJC to deal with IRIX F90v7.4.x failure to
+C       properly ANSWER and flush output on program exit:  new entries
+C       M3PROMPT used by the GET*() and PROMPT*() routines, and 
+C       M3FLUSH for use by user-code.
 C***********************************************************************
 
       IMPLICIT NONE
@@ -33,45 +47,41 @@ C***********************************************************************
 
 C...........   INCLUDES:
 
-        INCLUDE 'IODECL3.EXT'
+C...........   ARGUMENT and its description:
 
-
-C...........   ARGUMENTS and their descriptions:
-
-        CHARACTER*(*)   MESSAGE
+        CHARACTER(*)   MESSAGE
 
                  
 C...........   EXTERNAL FUNCTIONS and their descriptions:
 
-        INTEGER  TRIMLEN  !  string length, exclusive of trailing blanks
-        EXTERNAL TRIMLEN
+        INTEGER         INITLOG3 !  get log-device unit number
+        INTEGER         TRIMLEN  !  string length, exclusive of trailing blanks
+        EXTERNAL        TRIMLEN
 
-        INTEGER L
 
+C.......   Scratch LOCAL VARIABLES
 
-C...........   SAVED LOCAL VARIABLES and their descriptions:
-
-        INTEGER         LOGDEV
-        DATA            LOGDEV / -1 /
-        SAVE            LOGDEV
+        INTEGER     L
+        INTEGER, SAVE :: LOGDEV = -1
 
 
 C***********************************************************************
 C   begin body of subroutine  M3MESG
 
-!$OMP CRITICAL( S_LOGDEV )
-        IF ( LOGDEV .LT. 0 ) LOGDEV = INIT3()
-
         L = TRIMLEN( MESSAGE )
-        WRITE( LOGDEV,92000 ) MESSAGE( 1:L )
+
+!$OMP CRITICAL( S_LOGDEV )
+        IF ( LOGDEV .LT. 0 ) THEN
+            LOGDEV = INITLOG3()
+        END IF          !!  if logdev < 0 (initialization required)
+
+        WRITE( LOGDEV,'( 5X, A )' ) MESSAGE( 1:L )
+
         CALL FLUSH( LOGDEV )
 
+!$OMP END CRITICAL( S_LOGDEV )
 
-C******************  FORMAT  STATEMENTS   ******************************
-
-C...........   Log message formats..... 92xxx
-
-92000   FORMAT ( /5X , A )
+        RETURN
 
         END
 
