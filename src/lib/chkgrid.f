@@ -143,7 +143,7 @@ C.............  Check settings that must be consistent for exact grid match
                     MESG = 'ERROR: Columns, rows, x-origin, or ' //
      &                     'y-origin for ' // DATDESC // ' in ' //
      &                     CRLF() // BLANK10 // FILDESC( 1:L ) // 
-     &                     'are inconsistent with initialized values.'
+     &                     ' are inconsistent with initialized values.'
                     CALL M3MSG2( MESG ) 
 
                 END IF
@@ -169,7 +169,7 @@ C.............  Check settings that must be consistent for grids and subgrids
                     MESG = 'ERROR: Grid type, cell sizes, or ' //
      &                     'grid projection for ' // DATDESC // ' in '//
      &                     CRLF() // BLANK10 // FILDESC( 1:L ) // 
-     &                     'are inconsistent with initialized values.'
+     &                     ' are inconsistent with initialized values.'
                     CALL M3MSG2( MESG ) 
 
                 END IF
@@ -187,7 +187,7 @@ C                   making sure they line up based on the cell sizes
                     MESG = 'ERROR: Grid origins not compatible ' //
      &                     'between ' // DATDESC // ' in ' // 
      &                     CRLF() // BLANK10 // FILDESC( 1:L ) // 
-     &                     'and initialized values.'
+     &                     ' and initialized values.'
                     CALL M3MSG2( MESG ) 
 
                 END IF
@@ -195,34 +195,44 @@ C                   making sure they line up based on the cell sizes
 C.................  If offset has been set, then check to ensure its the same
                 IF( OFFLAG ) THEN
 
-                    XO = INT( ( XORIG3D - XORIG ) / XCELL )
-                    YO = INT( ( YORIG3D - YORIG ) / YCELL )
-                    IF( XOFF .NE. XO .OR.
-     &                  YOFF .NE. YO      ) THEN
+C.....................  If file has different origin from the subgrid...
+                    IF( XORIG3D .NE. XORIG .OR. 
+     &                  YORIG3D .NE. YORIG       ) THEN
 
-                        EFLAG = .TRUE.
-                        MESG = 'ERROR: Subgrid offset for ' //
+                        XO = INT( ( XORIG3D - XORIG ) / XCELL )
+                        YO = INT( ( YORIG3D - YORIG ) / YCELL )
+                        IF( XOFF .NE. XO .OR.
+     &                      YOFF .NE. YO      ) THEN
+
+                            EFLAG = .TRUE.
+                            MESG = 'ERROR: Subgrid offset for ' //
      &                          DATDESC // ' in ' // CRLF() // BLANK10// 
      &                          FILDESC( 1:L ) // 'is ' //
      &                         'inconsistent with initialized values.'
-                        CALL M3MSG2( MESG ) 
+                            CALL M3MSG2( MESG ) 
 
 
-                    END IF
+                        END IF
 
-C.....................  Check that current subgrid is the same as the previous
-C                       subgrid
-                    IF ( NCOLS .NE. NC      .OR.
-     &                   NROWS .NE. NR      .OR.
-     &                   FLTERR( XORIG, SNGL( XORIG3D ) ) .OR.
-     &                   FLTERR( YORIG, SNGL( YORIG3D ) )      ) THEN
+C.....................  If file has same origin as subgrid
+                    ELSE
 
-                         EFLAG = .TRUE.
-                         MESG = 'ERROR: Columns, rows, x-origin, or ' //
-     &                     'y-origin for ' // DATDESC // ' in ' //
-     &                     CRLF() // BLANK10 // FILDESC( 1:L ) // 
-     &                     'are inconsistent with values from ' // GRDNM
-                         CALL M3MSG2( MESG ) 
+C.........................  Check that current subgrid is the same as the 
+C                           previous subgrid
+                        IF ( NCOLS .NE. NC      .OR.
+     &                       NROWS .NE. NR      .OR.
+     &                       FLTERR( XORIG,SNGL( XORIG3D ) ) .OR.
+     &                       FLTERR( YORIG,SNGL( YORIG3D ) )      ) THEN
+
+                             EFLAG = .TRUE.
+                             MESG = 'ERROR: Columns, rows, x-origin, '//
+     &                          'or y-origin for ' //DATDESC //' in ' 
+     &                          //CRLF() //BLANK10 //FILDESC( 1:L ) // 
+     &                          'are inconsistent with values from ' // 
+     &                          GRDNM
+                             CALL M3MSG2( MESG ) 
+
+                        END IF
 
                     END IF
 
