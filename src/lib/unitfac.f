@@ -347,7 +347,7 @@ C----------------------------------------------------------------------
      &             BUF1( 1:LB1 ) // '" with "' // BUF2( 1:LB2 ) // '"'//
      &             CRLF() // BLANK10// 'No conversion will be made.'
             CALL M3MSG2( MESG )
-            FACTOR = 1.
+            FACTOR = -1.
 
             RETURN
 
