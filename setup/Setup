@@ -4,8 +4,8 @@
 #
 ## HEADER ########################################################
 #
-# This script sets up the environment variables needed for using running
-# the Txt2asci converter for Innogy.
+# This script sets up the environment variables needed for compiling
+# and linking to the edss_tools library.
 #
 ##################################################################
 
@@ -13,6 +13,7 @@ if ( $?EDSS_SUBSYS ) then
 else 
    echo "ERROR: EDSS Tools \"Setup\" script requires setting of the EDSS_SUBSYS"
    echo "       environment variable prior to using it."
+   exit( 1 )
 endif
 
 #  Set directories

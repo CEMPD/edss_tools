@@ -11,3 +11,7 @@ setenv ETDSRC     $TOOLS_ROOT/src/modules   # source code for tools modules
 setenv ETMSRC     $TOOLS_ROOT/src/main      # source code for tools programs
 setenv ETLSRC     $TOOLS_ROOT/src/lib       # source code for tools library
 setenv ETLSET     $TOOLS_ROOT/setup         # Setup directory
+
+if ( $?EDSS_EXE ) then
+   setenv  TOOLS_BIN "$TOOLS_ROOT/$EDSS_EXE"
+endif

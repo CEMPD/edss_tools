@@ -9,6 +9,8 @@ if ( $status != 0 ) then
     exit( $status )
 endif
 
+source $EDSS_SUBSYS/filesetapi/Setup
+
 # Make directories for library, object files, and executables
 setenv    TOOLS_BIN "$TOOLS_ROOT/$EDSS_EXE"
 if( ! -e $TOOLS_BIN ) mkdir -p $TOOLS_BIN
@@ -19,41 +21,41 @@ switch ( $EDSS_EXE )
   case IRIX6f90:
   case IRIXn64f90:
     setenv FC    f90
-    setenv FFLAGS   "$FFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
-    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}" 
+    setenv FFLAGS   "$FFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FSDIR}"
+    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}  -I${FSDIR}"
     setenv LDIRS    "-L${TOOLS_BIN}"
     breaksw
   case SunOS5f90:
 #   NOTE: -Bstatic caused problems with ENVYN (perhaps because not
 #         using I/O API compiled with f90 ?)
     setenv FC    f90
-    setenv FFLAGS   "$FFLAGS -I${ETINC} -I${IOINC} -M${ETDSRC}/${EDSS_EXE}"
-    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -M${ETDSRC}/${EDSS_EXE}"
+    setenv FFLAGS   "$FFLAGS -I${ETINC} -I${IOINC} -M${ETDSRC}/${EDSS_EXE} -I${FSDIR}"
+    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -M${ETDSRC}/${EDSS_EXE} -I${FSDIR}"
     setenv LDIRS    "-L${TOOLS_BIN}"
     breaksw
 case HP_UX11f90:
     setenv FC  f90
-    setenv FFLAGS   "$FFLAGS  -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
-    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
+    setenv FFLAGS   "$FFLAGS  -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FSDIR}"
+    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FSDIR}"
     setenv LDIRS    "+U77 -Wl,-L,${TOOLS_BIN}"
     breaksw
 case AIX4n64f90:
 case AIX4f90:
     setenv FC  xlf
-    setenv FFLAGS   "$FFLAGS  -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
-    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
+    setenv FFLAGS   "$FFLAGS  -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FSDIR}"
+    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FSDIR}"
     setenv LDIRS    "-L${TOOLS_BIN} -lxlsmp"
     breaksw
 case Linux2_alpha:
     setenv FC  fort
-    setenv FFLAGS   "$FFLAGS  -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
-    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
+    setenv FFLAGS   "$FFLAGS  -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FSDIR}"
+    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FSDIR}"
     setenv LDIRS    "-L${TOOLS_BIN}"
     breaksw
 case Linux2_x86ifc:
     setenv FC  ifc
-    setenv FFLAGS   "$FFLAGS -cl,${ETDSRC}/${EDSS_EXE}/edss.pcl -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
-    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
+    setenv FFLAGS   "$FFLAGS -cl,${ETDSRC}/${EDSS_EXE}/edss.pcl -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FSDIR}"
+    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FSDIR}"
     setenv LDIRS    "-L${SMK_BIN} -L${TOOLS_BIN}"
     breaksw
 default:
