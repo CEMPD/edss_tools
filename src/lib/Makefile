@@ -1,6 +1,6 @@
-# Version %W% 
-# Path    %P%
-# Date    %G% %U%
+# Version $Id$ 
+# Path    $Source$ 
+# Date    $Date$
 
 # Makefile for I/O API Tools library
 

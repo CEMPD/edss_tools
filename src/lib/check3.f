@@ -1,6 +1,6 @@
 
 C.........................................................................
-C Version "%W% %P% %G% %U%"
+C @(#)$Header$ 
 C EDSS/Models-3 I/O API.  Portions copyright (C) 1992-1997 MCNC
 C See file "COPYRIGHT.txt" for conditions of use.
 C.........................................................................
