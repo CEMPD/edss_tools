@@ -45,8 +45,10 @@ C***************************************************************************
         IMPLICIT NONE
 
 C...........   EXTERNAL FUNCTIONS
-        INTEGER    FINDC
-        EXTERNAL   FINDC
+        CHARACTER*2 CRLF
+        INTEGER     FINDC
+
+        EXTERNAL    CRLF, FINDC
 
 C...........   SUBROUTINE ARGUMENTS
         CHARACTER(*), INTENT (IN) :: LINE         ! character string to parse
@@ -231,9 +233,15 @@ C.............  This subprogram stores the segment from the input string
 
             ELSE
 
-                MESG = 'INTERNAL ERROR: Overflow prevented for array '//
-     &                 'SEGMENT in ' // PROGNAME
+                MESG = 'ERROR: Overflow prevented while '//
+     &                 'parsing line ' // PROGNAME
                 CALL M3MSG2( MESG )
+                MESG = 'First 200 characters of line contents are:'
+                CALL M3MSG2( MESG )
+                MESG = LINE( 1:200 )
+                CALL M3MSG2( MESG )
+
+                MESG = 'Formatting problem.'
                 CALL M3EXIT( PROGNAME, 0, 0, MESG, 2 )
                 
             END IF
