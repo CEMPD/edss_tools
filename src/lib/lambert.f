@@ -88,8 +88,9 @@ C...........   External Functions
 
         LOGICAL         DSCOORD
         LOGICAL         DSCGRID
+        INTEGER         ENVINT
         INTEGER         INIT3           !  from M3IO
-        EXTERNAL        DSCOORD, DSCGRID, INIT3
+        EXTERNAL        DSCOORD, DSCGRID, ENVINT, INIT3
 
 
 C.......   LOCAL VARIABLES:
@@ -116,6 +117,7 @@ C.......   Arguments for GTPZ0:
       CHARACTER*128     FN83            !  NAD1983 file name
       INTEGER*4         LENGTH          !  NAD* record-length
       INTEGER*4         IFLG            !  error flag
+      INTEGER*4         IOS             !  i/o status
 
 C.......   Error codes for GTPZ0:
 
@@ -310,7 +312,11 @@ C.......   Set up input arguments for GTPZ0()
         INSYS  = 4       !  Lambert conformal conic
         INZONE = ZONE
         INUNIT = 2       !  input units:  meters
-        INSPH  = 8       !  GRS 1980 spheroid
+        
+C.........  Get value of spheroid code from environment        
+        INSPH = ENVINT( 'INPSH_CODE', 'Radius of the earth code', 
+     &                  19, IOS )
+        
         IPR    = 0       !  print error messages, if any
         JPR    = 1       !  do NOT print projection parameters
         LEMSG  = INIT3() !  unit number for log file
@@ -358,7 +364,11 @@ C.......   Set up input arguments for GTPZ0()
         CRDIN( 2 ) = DBLE( LAT )
         INSYS  = 0       !  projection default (lat-lon)
         INUNIT = 4       !  input units:  degrees
-        INSPH  = 8       !  GRS 1980 spheroid
+
+C.........  Get value of spheroid code from environment        
+        INSPH = ENVINT( 'INPSH_CODE', 'Radius of the earth code', 
+     &                  19, IOS )
+        
         IPR    = 0       !  print error messages, if any
         JPR    = 1       !  do NOT print projection parameters
         LEMSG  = INIT3() !  unit number for log file
@@ -421,7 +431,11 @@ C.......   Set up input arguments for GTPZ0()
         INSYS  = 4       !  Lambert conformal conic
         INZONE = ZONE
         INUNIT = 2       !  input units:  meters
-        INSPH  = 8       !  GRS 1980 spheroid
+        
+C.........  Get value of spheroid code from environment        
+        INSPH = ENVINT( 'INPSH_CODE', 'Radius of the earth code', 
+     &                  19, IOS )
+        
         IPR    = 0       !  print error messages, if any
         JPR    = 1       !  do NOT print projection parameters
         LEMSG  = INIT3() !  unit number for log file
@@ -472,7 +486,11 @@ C.......   Set up input arguments for GTPZ0()
         INSYS  = 1
         INZONE = Z
         INUNIT = 2       !  meters
-        INSPH  = 8       !  GRS 1980 spheroid
+        
+C.........  Get value of spheroid code from environment        
+        INSPH = ENVINT( 'INPSH_CODE', 'Radius of the earth code', 
+     &                  19, IOS )
+        
         IPR    = 0       !  print error messages, if any
         JPR    = 1       !  do NOT print projection parameters
         LEMSG  = INIT3() !  unit number for log file
