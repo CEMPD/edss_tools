@@ -44,6 +44,12 @@ case AIX4f90:
     setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
     setenv LDIRS    "-L${TOOLS_BIN} -lxlsmp"
     breaksw
+case Linux2_alpha:
+    setenv FC  fort
+    setenv FFLAGS   "$FFLAGS  -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
+    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}"
+    setenv LDIRS    "-L${TOOLS_BIN}"
+    breaksw
 default:
     echo "Do not know about executable format "$EDSS_EXE
     exit( 2 )
