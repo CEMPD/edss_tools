@@ -8,7 +8,8 @@ C  DESCRIPTION:
 C      This function counts the number of free-formatted strings in a list
 C      of string that may or may not have quotes.  This is used to help
 C      when a string is available for reading a series of values, but
-C      no indication is available for the number of entries to read.
+C      no indication is available for the number of entries to read.  It
+C      accounts for comments appended with a "!" and skips blank lines.
 C
 C  PRECONDITIONS REQUIRED:
 C
@@ -17,13 +18,13 @@ C
 C  REVISION  HISTORY:
 C      Created by M. Houyoux 1/99
 C
-C****************************************************************************/
+C**************************************************************************
 C
 C Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
 C                System
 C File: @(#)$Id$
 C
-C COPYRIGHT (C) 1999, MCNC--North Carolina Supercomputing Center
+C COPYRIGHT (C) 2001, MCNC--North Carolina Supercomputing Center
 C All Rights Reserved
 C
 C See file COPYRIGHT for conditions of use.
@@ -42,130 +43,159 @@ C***************************************************************************
 
         IMPLICIT NONE
 
-C...........   EXTERNAL FUNCTIONS and their descriptions:
-        INTEGER    INDEX1
-        EXTERNAL   INDEX1
-        
+C...........   EXTERNAL FUNCTIONS
+        INTEGER    FINDC
+        EXTERNAL   FINDC
+
 C...........   SUBROUTINE ARGUMENTS
         INTEGER       ILENGTH     !  length of string
         CHARACTER*(*) STRING      !  description of source category
 
 C...........   Local parameters
-        INTEGER, PARAMETER :: NXALP = 25
-        CHARACTER*1, PARAMETER :: XALPLIST( NXALP ) =    ! non-delimiters
-     &             ( / '~', '@', '#', '$', '%', '^', '&', '*', '(', 
-     &                 ')', '-', '_', '+', '=', '{', '}', '[', ']',
-     &                 '|', '\', '<', '>', '.', '?', '/' / )
+        INTEGER    , PARAMETER :: NDELIM = 4
+        CHARACTER*1, PARAMETER :: DELIMLST( NDELIM ) = 
+     &                         (/ ',', ' ', ';', '	' /)
              
 C...........   Array of 1-char strings for processing
-        CHARACTER*1   ARRSTR( ILENGTH )
+        CHARACTER*1   ARRSTR( 5120 )  ! 256 * 20
+
+C...........  Arrays for sorting non-delimiters on a per-machine basis
+        INTEGER              NDINDX  ( NDELIM )
+        CHARACTER*1, SAVE :: DELIMSRT( NDELIM )
 
 C...........   Other local variables
-        INTEGER         I, L             !  counters and indices
+        INTEGER         I, J, L, L1, L2  !  counters and indices
+        INTEGER         IXP              !  index to non-delimeters
         INTEGER      :: NCNT             !  count of fields
 
         LOGICAL      :: ALPHA            !  true when within alpha-numeric 
         LOGICAL      :: DELIM            !  true when within or past delimiter 
+        LOGICAL      :: FIRSTIME = .TRUE.!  true first time routine is called
         LOGICAL      :: NUMBER           !  true when within number in string 
         LOGICAL      :: QUOTED           !  true when within quotes in string
+        LOGICAL      :: THISNMBR         !  true when current iteration is numbr
 
-        CHARACTER*1      CBUF          !  temporary buffer
-        CHARACTER*1   :: DOUBLEQ = '"'
-        CHARACTER*1   :: SINGLEQ = "'"  
-        CHARACTER*1   :: PERIOD  = '.' 
-        CHARACTER*1      QUOTVAL       !  value of starting quote 
+        CHARACTER*1     CBUF             !  temporary buffer
+        CHARACTER*1  :: DOUBLEQ = '"'
+        CHARACTER*1  :: SINGLEQ = "'"  
+        CHARACTER*1  :: PERIOD  = '.' 
+        CHARACTER*1     QUOTVAL          !  value of starting quote 
+
+        CHARACTER*300   MESG             ! message buffer
 
         CHARACTER*16 :: PROGNAME = 'GETNLIST' ! program name
 
 C***********************************************************************
 C   begin body of function GETNLIST
 
-        L = MIN( LEN_TRIM( STRING ), ILENGTH )
+C.........  The first time the routine is called, sort the list of delimiters
+        IF( FIRSTIME ) THEN
+            DO I = 1, NDELIM 
+                NDINDX( I ) = I
+            END DO
 
-C.........  Copy string into 1-char array
-        DO I = 1, L
-            ARRSTR( I ) = STRING( I:I )
-        ENDDO
+            CALL SORTIC( NDELIM, NDINDX, DELIMLST )
 
-C.........  Initialize count, flags, and segments (npte, initializing in
-C           the variable definitions is insufficient)
+            DO I = 1, NDELIM 
+                J = NDINDX( I )
+                DELIMSRT( I ) = DELIMLST( J )
+            END DO
+
+            FIRSTIME = .FALSE.
+
+        END IF
+
+        L2 = LEN_TRIM( STRING )
+
+C.........  Check for comments, and use to set the end of the line
+        L = INDEX( STRING( 1:L2 ), '!' )
+
+        IF( L .LE. 0 ) THEN
+            L = L2
+        ELSE
+            L = L - 1
+        END IF
+
+C.........  Skip blank lines
+        IF( L .EQ. 0 ) RETURN
+
+C.........  Initialize count and flags
         NCNT    = 0
         ALPHA   = .FALSE.
         DELIM   = .TRUE.
         NUMBER  = .FALSE.
         QUOTED  = .FALSE.
 
-C.........  Process array of 1-char strings to count up fields.
+C.........  Process LINE 1-character at a time
         DO I = 1, L
 
-            CBUF = ARRSTR( I )
+            CBUF = STRING( I:I )
+
+C.............  Look for character in delimiters
+            IXP = FINDC( CBUF, NDELIM, DELIMSRT )
+
+C.............  Evaluate the current character for number or not
+            THISNMBR = ( CBUF .GE. '0' .AND. CBUF .LE. '9' )
+
 C.............  Waiting for next field...
             IF( DELIM ) THEN
 
-                NUMBER = ( CBUF .GE. '0' .AND. CBUF .LE. '9' )
-                ALPHA  = ( .NOT. NUMBER .AND. CBUF .NE. ',' .AND.
-     &                     CBUF .NE. ' ' .AND. CBUF .NE. ';' .AND.
-     &                     CBUF .NE. SINGLEQ .AND. CBUF .NE. DOUBLEQ )
+                NUMBER = THISNMBR
+                ALPHA  = ( .NOT. NUMBER .AND. IXP .LE. 0 )
 
-                IF( ALPHA ) THEN
-                    DELIM = .FALSE.
-                    NCNT  = NCNT + 1
-
-                ELSEIF( NUMBER ) THEN
-                    DELIM  = .FALSE.
-                    NCNT   = NCNT + 1
-
-                ELSEIF( CBUF .EQ. SINGLEQ ) THEN
+                IF( CBUF .EQ. SINGLEQ ) THEN
                     QUOTED  = .TRUE.
                     DELIM   = .FALSE.
                     QUOTVAL = SINGLEQ
+                    L1     = I + 1
                     NCNT    = NCNT + 1
 
-                ELSEIF( CBUF .EQ. DOUBLEQ ) THEN
+                ELSE IF( CBUF .EQ. DOUBLEQ ) THEN
                     QUOTED  = .TRUE.
                     DELIM   = .FALSE.
                     QUOTVAL = DOUBLEQ
+                    L1      = I + 1
                     NCNT    = NCNT + 1
 
-                ENDIF  ! Else its a delimiter
+                ELSE IF( ALPHA ) THEN
+                    DELIM = .FALSE.
+                    L1    = I
+                    NCNT  = NCNT + 1
+
+                ELSE IF( NUMBER ) THEN
+                    DELIM  = .FALSE.
+                    L1     = I
+                    NCNT   = NCNT + 1
+
+                END IF  ! Else its another delimiter
 
 C.............  In a quoted field, skip everything unless it is an end quote
-            ELSEIF( QUOTED ) THEN
+            ELSE IF( QUOTED ) THEN
 
                 IF( CBUF .EQ. QUOTVAL ) THEN
                     QUOTED  = .FALSE.
                     DELIM   = .TRUE.
-                ENDIF
+                    L2      = I - 1
+                  
+                END IF
 
-C.............  If start of field was a number, but adjacent character is a
-C               alpha, then turn field into an alpha (periods would delimit)
-            ELSEIF( NUMBER .AND. 
-     &            ( ( CBUF .GE. 'A' .AND. CBUF .LE. 'Z' ) .OR.
-     &              INDEX1( CBUF, NXALP, XALPLIST ) .GT. 0 ) ) THEN
+C.............  If start of field was a number, but adjacent character is not
+C               a delimiter, then turn field into an alpha
+            ELSE IF( NUMBER .AND. .NOT. THISNMBR .AND. IXP .LE. 0 ) THEN
                 ALPHA  = .TRUE.
                 NUMBER = .FALSE.
 
-C.............  If start of field was a number, and this is not a decimal or
-C               another number, then end of number has been reached
-            ELSEIF( NUMBER .AND. 
-     &              CBUF .NE. PERIOD .AND.
-     &            ( CBUF .LT. '0' .OR. CBUF .GT. '9' ) ) THEN
+C.............  If start of field was a number or alpha, and this is a 
+C               delimiter, then end of number has been reached
+            ELSE IF( IXP .GT. 0 ) THEN
+                ALPHA = .FALSE.
                 NUMBER = .FALSE.
                 DELIM  = .TRUE.
+                L2     = I - 1
 
-C.............  If start of field was an alpha, and this is not an 
-C               alpha-numeric, then end of alpha has been reached.
-            ELSEIF( ALPHA .AND.
-     &              .NOT. ( CBUF .GE. 'A' .AND. CBUF .LE. 'Z' ) .AND.
-     &              .NOT. ( CBUF .GE. '0' .AND. CBUF .LE. '9' ) .AND.
-     &              INDEX1( CBUF, NXALP, XALPLIST ) .LE. 0 ) THEN
+            END IF
 
-                ALPHA = .FALSE.
-                DELIM = .TRUE.
-
-            ENDIF
-
-        ENDDO
+        END DO
 
         GETNLIST = NCNT
 
