@@ -44,21 +44,23 @@ C...........   INCLUDES:
 !.........  Horiztonal grid information
         CHARACTER(LEN=IOVLEN3), PUBLIC :: GRDNM = ' '  ! grid name
         CHARACTER(LEN=IOVLEN3), PUBLIC :: COORD = ' '  ! coord system name
-        REAL   , PUBLIC :: GDTYP = -1     ! i/o api grid type code
-        REAL   , PUBLIC :: P_ALP = 0.D0   ! projection alpha
-        REAL   , PUBLIC :: P_BET = 0.D0   ! projection beta
-        REAL   , PUBLIC :: P_GAM = 0.D0   ! projection gamma
-        REAL   , PUBLIC :: XCENT = 0.D0   ! x-center of projection
-        REAL   , PUBLIC :: YCENT = 0.D0   ! y-center of projection
-        REAL   , PUBLIC :: XORIG = 0.D0   ! x-origin of grid
-        REAL   , PUBLIC :: YORIG = 0.D0   ! y-origin of grid
-        REAL   , PUBLIC :: XCELL = 0.D0   ! x-dim of cells
-        REAL   , PUBLIC :: YCELL = 0.D0   ! y-dim of cells
+        INTEGER, PUBLIC :: GDTYP = -1     ! i/o api grid type code
+        REAL*8 , PUBLIC :: P_ALP = 0.D0   ! projection alpha
+        REAL*8 , PUBLIC :: P_BET = 0.D0   ! projection beta
+        REAL*8 , PUBLIC :: P_GAM = 0.D0   ! projection gamma
+        REAL*8 , PUBLIC :: XCENT = 0.D0   ! x-center of projection
+        REAL*8 , PUBLIC :: YCENT = 0.D0   ! y-center of projection
+        REAL*8 , PUBLIC :: XORIG = 0.D0   ! x-origin of grid
+        REAL*8 , PUBLIC :: YORIG = 0.D0   ! y-origin of grid
+        REAL*8 , PUBLIC :: XCELL = 0.D0   ! x-dim of cells
+        REAL*8 , PUBLIC :: YCELL = 0.D0   ! y-dim of cells
         INTEGER, PUBLIC :: NCOLS = 0      ! number of columns in grid
         INTEGER, PUBLIC :: NROWS = 0      ! number of rows in grid
         INTEGER, PUBLIC :: NGRID = 0      ! number of cells in grid
-        INTEGER, PUBLIC :: XOFF  = 0      ! subgrid offset
+        INTEGER, PUBLIC :: XOFF  = 0      ! subgrid offset (x-sub = x - xoff)
         INTEGER, PUBLIC :: YOFF  = 0      ! subgrid offset
+        INTEGER, PUBLIC :: XOFF_A= 0      ! tmp subgrid offset (x-sub = x - xoff)
+        INTEGER, PUBLIC :: YOFF_A= 0      ! tmpsubgrid offset
         LOGICAL, PUBLIC :: OFFLAG = .FALSE. ! true: subgrid offset has been set
 
 !.........  Vertical structure information
