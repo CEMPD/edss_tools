@@ -208,7 +208,7 @@ C.............  Read whole line from the file
             END IF
 
 C.............  Skip blank lines
-            IF( LINE .EQ. ' ' ) RETURN
+            IF( LINE .EQ. ' ' ) CYCLE
 
 C.............  Adjust line to left and create upper case line
             LINE = ADJUSTL( LINE )
