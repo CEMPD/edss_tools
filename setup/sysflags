@@ -20,7 +20,6 @@ switch ( $EDSS_EXE )
   case IRIXn32f90:
   case IRIX6f90:
   case IRIXn64f90:
-    setenv FC    f90
     setenv FFLAGS   "$FFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
     setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}  -I${FS_ROOT}"
     setenv LDIRS    "-L${TOOLS_BIN}"
@@ -28,38 +27,32 @@ switch ( $EDSS_EXE )
   case SunOS5f90:
 #   NOTE: -Bstatic caused problems with ENVYN (perhaps because not
 #         using I/O API compiled with f90 ?)
-    setenv FC    f90
     setenv FFLAGS   "$FFLAGS -I${ETINC} -I${IOINC} -M${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
     setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -M${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
     setenv LDIRS    "-L${TOOLS_BIN}"
     breaksw
 case HP_UX11f90:
-    setenv FC  f90
     setenv FFLAGS   "$FFLAGS  -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
     setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
     setenv LDIRS    "+U77 -Wl,-L,${TOOLS_BIN}"
     breaksw
 case AIX4n64f90:
 case AIX4f90:
-    setenv FC  xlf
     setenv FFLAGS   "$FFLAGS  -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
     setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
     setenv LDIRS    "-L${TOOLS_BIN} -lxlsmp"
     breaksw
 case Linux2_alpha:
-    setenv FC  fort
     setenv FFLAGS   "$FFLAGS  -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
     setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
     setenv LDIRS    "-L${TOOLS_BIN}"
     breaksw
 case Linux2_x86ifc:
-    setenv FC  ifc
     setenv FFLAGS   "$FFLAGS  -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
     setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
     setenv LDIRS    "-L${TOOLS_BIN}"
     breaksw
 case  Linux2_x86pg:
-    setenv FC  pgf90
     setenv FFLAGS   "$FFLAGS -module ${FS_BIN} -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
     setenv DBGFLAGS "$DBGFLAGS -module ${FS_BIN} -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
     setenv LDIRS    "-L${TOOLS_BIN}"
