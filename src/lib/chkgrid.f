@@ -107,6 +107,16 @@ C.............  Set tmp rows, columns, and total cells depending on file type
             NR = NROWS3D
             FILDESC = 'grid description file'
 
+        ELSEIF( FTYPE .EQ. 'SURROGATES' ) THEN
+            NC = NCOLS3D
+            NR = NROWS3D
+            FILDESC = 'surrogates file'
+
+        ELSEIF( FTYPE .EQ. 'LANDUSE' ) THEN
+            NC = NCOLS3D
+            NR = NROWS3D
+            FILDESC = 'landuse file'
+
         ELSE
             MESG = 'INTERNAL ERROR: File type "' // FTYPE // 
      &              '" not known in call to ' // PROGNAME
