@@ -124,6 +124,9 @@ C.........  Check for comments, and use to set the end of the line
             L = L - 1
         END IF
 
+C.........  Skip blank lines
+        IF( L .EQ. 0 ) RETURN
+
 C.........  Initialize count, flags, and segments (npte, initializing in
 C           the variable definitions is insufficient)
         NCNT    = 0
