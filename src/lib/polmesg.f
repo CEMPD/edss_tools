@@ -57,7 +57,7 @@ C...........   Other local variables
         INTEGER       I, J, L0, L1, L2
         INTEGER       LCNT              ! length count
 
-        CHARACTER*1024 :: MESG           !  message buffer
+        CHARACTER*5120 :: MESG           !  message buffer
         CHARACTER*20   :: SPACE = ' '
 
         CHARACTER*16 :: PROGNAME = 'POLMESG' !  program name
@@ -104,8 +104,7 @@ C          unneeded spaces in the message.
         L1 = LEN_TRIM( MESG )
         DO I = 1, L1, 256
 
-            J = (I-1)*256 
-            CALL M3MSG2( MESG( J+1:MIN( J+256,L1 ) ) )
+            CALL M3MSG2( MESG( I:MIN( I+255,L1 ) ) )
 
         END DO
 
