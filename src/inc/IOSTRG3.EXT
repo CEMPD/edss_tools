@@ -1,4 +1,4 @@
-C %W% %P% %G% %U%
+C @(#)$Header$ 
 
 C.........  Width of other global character strings 
         INTEGER, PARAMETER :: IOVLEN3 = 16  ! length of I/O API variables

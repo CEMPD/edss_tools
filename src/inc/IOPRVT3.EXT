@@ -1,4 +1,4 @@
-C %W% %P% %G% %U%
+C @(#)$Header$
 
 C.........   The variables in this include file are for defining the widths
 C            of character strings in I/O API tools. They are all declared as 
