@@ -314,7 +314,7 @@ C.......   Set up input arguments for GTPZ0()
         INUNIT = 2       !  input units:  meters
         
 C.........  Get value of spheroid code from environment        
-        INSPH = ENVINT( 'INPSH_CODE', 'Radius of the earth code', 
+        INSPH = ENVINT( 'INSPH_CODE', 'Radius of the earth code', 
      &                  19, IOS )
         
         IPR    = 0       !  print error messages, if any
@@ -366,7 +366,7 @@ C.......   Set up input arguments for GTPZ0()
         INUNIT = 4       !  input units:  degrees
 
 C.........  Get value of spheroid code from environment        
-        INSPH = ENVINT( 'INPSH_CODE', 'Radius of the earth code', 
+        INSPH = ENVINT( 'INSPH_CODE', 'Radius of the earth code', 
      &                  19, IOS )
         
         IPR    = 0       !  print error messages, if any
@@ -433,7 +433,7 @@ C.......   Set up input arguments for GTPZ0()
         INUNIT = 2       !  input units:  meters
         
 C.........  Get value of spheroid code from environment        
-        INSPH = ENVINT( 'INPSH_CODE', 'Radius of the earth code', 
+        INSPH = ENVINT( 'INSPH_CODE', 'Radius of the earth code', 
      &                  19, IOS )
         
         IPR    = 0       !  print error messages, if any
@@ -488,7 +488,7 @@ C.......   Set up input arguments for GTPZ0()
         INUNIT = 2       !  meters
         
 C.........  Get value of spheroid code from environment        
-        INSPH = ENVINT( 'INPSH_CODE', 'Radius of the earth code', 
+        INSPH = ENVINT( 'INSPH_CODE', 'Radius of the earth code', 
      &                  19, IOS )
         
         IPR    = 0       !  print error messages, if any
