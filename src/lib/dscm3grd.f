@@ -82,21 +82,33 @@ C...........   EXTERNAL FUNCTIONS:
      &               STR2INT, STR2REAL
         
 C...........   Local parameters
-        INTEGER, PARAMETER :: MXGRDTYP = 5
+        INTEGER, PARAMETER :: MXGRDTYP = 11
         INTEGER, PARAMETER :: M3CHAR = 7
 
 C...........   Grid types and names arrays
         INTEGER      :: GRDTYPES( MXGRDTYP ) = ( / LATGRD3
+     &                                           , LATGRD3
+     &                                           , LATGRD3
+     &                                           , LAMGRD3
      &                                           , LAMGRD3
      &                                           , MERGRD3
+     &                                           , MERGRD3
      &                                           , STEGRD3
+     &                                           , STEGRD3
+     &                                           , UTMGRD3
      &                                           , UTMGRD3 / )
 
         CHARACTER*15 :: GRDNAMES( MXGRDTYP ) = ( / 'LAT-LON        '
+     &                                           , 'GEOGRAPHIC     '
+     &                                           , 'LATGRD3        '
      &                                           , 'LAMBERT        '
+     &                                           , 'LAMGRD3        '
      &                                           , 'MERCATOR       '
+     &                                           , 'MERGRD3        '
      &                                           , 'STEREOGRAPHIC  '
-     &                                           , 'UTM            ' / )
+     &                                           , 'STEGRD3        '
+     &                                           , 'UTM            '
+     &                                           , 'UTMGRD3        ' / )
 
 C...........   Local arrays (note- tried to make these allocatable, but
 C              this caused unexplainable crashing on SGI).
@@ -193,7 +205,10 @@ C.............  Read whole line from the file
 
                 CALL M3MESG( MESG )
                 CYCLE
-            ENDIF
+            END IF
+
+C.............  Skip blank lines
+            IF( LINE .EQ. ' ' ) RETURN
 
 C.............  Adjust line to left and create upper case line
             LINE = ADJUSTL( LINE )
@@ -271,6 +286,14 @@ C.............  X-center value
 
 C.............  Y-center value
             CASE( 'YCENT_GD' )
+                CALL GRDINFO_CHECKER( UPCSGMT, M3DBLE, YCENT, IDUM )
+
+C.............  X-center value
+            CASE( 'P_XCENT_GD' )
+                CALL GRDINFO_CHECKER( UPCSGMT, M3DBLE, XCENT, IDUM )
+
+C.............  Y-center value
+            CASE( 'P_YCENT_GD' )
                 CALL GRDINFO_CHECKER( UPCSGMT, M3DBLE, YCENT, IDUM )
 
 C.............  X-origin value
