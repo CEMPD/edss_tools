@@ -57,8 +57,8 @@ C...........   Other local variables
         INTEGER       I, L0, L1, L2
         INTEGER       LCNT              ! length count
 
-        CHARACTER*300 :: MESG           !  message buffer
-        CHARACTER*20  :: SPACE = ' '
+        CHARACTER*1000 :: MESG           !  message buffer
+        CHARACTER*20   :: SPACE = ' '
 
         CHARACTER*16 :: PROGNAME = 'POLMESG' !  program name
 
