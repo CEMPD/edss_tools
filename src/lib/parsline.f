@@ -64,7 +64,7 @@ C...........   Array of 1-char strings for processing
         CHARACTER*1   ARRSTR( 5120 )  ! 256 * 20
 
 C...........  Arrays for sorting non-delimiters on a per-machine basis
-        INTEGERE             NDINDX  ( NDELIM )
+        INTEGER              NDINDX  ( NDELIM )
         CHARACTER*1, SAVE :: DELIMSRT( NDELIM )
 
 C...........   Other local variables
