@@ -78,6 +78,7 @@ C...........   Local variables
         REAL*8        CHK_Y   ! tmp val for checking subgrid even with grid
 
         LOGICAL, SAVE :: GFLAG  = .FALSE. ! true: grid settings have been init
+        LOGICAL       :: SFLAG  = .FALSE. ! true: local error
 
         CHARACTER*25    FILDESC  ! description of input file
         CHARACTER*300   MESG     ! message buffer
@@ -86,6 +87,9 @@ C...........   Local variables
 
 C***********************************************************************
 C   begin body of function CHKGRID
+
+C.............  Initialize local error flag
+        SFLAG = .FALSE.
 
 C.............  Set tmp rows, columns, and total cells depending on file type
         IF( FTYPE .EQ. 'GMAT' ) THEN
@@ -140,7 +144,7 @@ C.............  Check settings that must be consistent for exact grid match
      &               DBLERR( XORIG, XORIG3D ) .OR.
      &               DBLERR( YORIG, YORIG3D )      ) THEN
 
-                    EFLAG = .TRUE.
+                    SFLAG = .TRUE.
                     MESG = 'ERROR: Columns, rows, x-origin, or ' //
      &                     'y-origin for ' // DATDESC // ' in ' //
      &                     CRLF() // BLANK10 // FILDESC( 1:L ) // 
@@ -166,7 +170,7 @@ C.............  Check settings that must be consistent for grids and subgrids
      &               DBLERR( P_BET, P_BET3D  ) .OR.
      &               DBLERR( P_GAM, P_GAM3D  )      ) THEN
 
-                    EFLAG = .TRUE.
+                    SFLAG = .TRUE.
                     MESG = 'ERROR: Grid type, cell sizes, or ' //
      &                     'grid projection for ' // DATDESC // ' in '//
      &                     CRLF() // BLANK10 // FILDESC( 1:L ) // 
@@ -184,7 +188,7 @@ C                   making sure they line up based on the cell sizes
                 IF( DBLERR( CHK_X, 0.D0 ) .OR.
      &              DBLERR( CHK_Y, 0.D0 )      ) THEN
 
-                    EFLAG = .TRUE.
+                    SFLAG = .TRUE.
                     MESG = 'ERROR: Grid origins not compatible ' //
      &                     'between ' // DATDESC // ' in ' // 
      &                     CRLF() // BLANK10 // FILDESC( 1:L ) // 
@@ -205,7 +209,7 @@ C.....................  If file has different origin from the subgrid...
                         IF( XOFF .NE. XO .OR.
      &                      YOFF .NE. YO      ) THEN
 
-                            EFLAG = .TRUE.
+                            SFLAG = .TRUE.
                             MESG = 'ERROR: Subgrid offset for ' //
      &                          DATDESC // ' in ' // CRLF() // BLANK10// 
      &                          FILDESC( 1:L ) // 'is ' //
@@ -225,7 +229,7 @@ C                           previous subgrid
      &                       DBLERR( XORIG, XORIG3D ) .OR.
      &                       DBLERR( YORIG, YORIG3D )      ) THEN
 
-                             EFLAG = .TRUE.
+                             SFLAG = .TRUE.
                              MESG = 'ERROR: Columns, rows, x-origin, '//
      &                          'or y-origin for ' //DATDESC //' in ' 
      &                          //CRLF() //BLANK10 //FILDESC( 1:L ) // 
@@ -302,7 +306,7 @@ C.........  Initialize grid information
 
         ENDIF
 
-        IF( EFLAG ) THEN
+        IF( SFLAG ) THEN
 
             MESG = 'ERROR: Grid parameters for ' // DATDESC // ' in ' //
      &             CRLF() // BLANK10 // FILDESC( 1:L ) //
@@ -310,6 +314,8 @@ C.........  Initialize grid information
             CALL M3MSG2( MESG )
 
         END IF
+
+	IF( SFLAG ) EFLAG = SFLAG
 
         RETURN
 
