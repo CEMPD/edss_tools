@@ -129,8 +129,10 @@ C.............  Set tmp rows, columns, and total cells depending on file type
         ELSEIF( FTYPE .EQ. 'DOT' ) THEN
             NC = NCOLS3D - 1
             NR = NROWS3D - 1
-            X0 = XORIG3D + 0.5 * XCELL3D
-            Y0 = YORIG3D + 0.5 * YCELL3D
+            X0 = XORIG
+            Y0 = YORIG
+c            X0 = XORIG3D + 0.5 * XCELL3D
+c            Y0 = YORIG3D + 0.5 * YCELL3D
             FILDESC = 'dot-gridded file'
 
         ELSE
@@ -268,7 +270,7 @@ C                       one, set flag
                     YOFF_A = INT( ( Y0 - YORIG ) / YCELL )
                     
 C.....................  Reset origin and number of cells to latest grid
-                    GRDNM = GDNAM3D
+                    IF( FTYPE /= 'DOT' ) GRDNM = GDNAM3D
 
 C.....................  Only store grid and offset parameters if the subgrid is
 C                       not temporary
