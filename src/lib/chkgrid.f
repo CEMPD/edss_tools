@@ -47,13 +47,13 @@ C.........  INCLUDES:
         INCLUDE 'IOCNST3.EXT'   !  emissions constant parameters
         INCLUDE 'PARMS3.EXT'    !  I/O API parameters
         INCLUDE 'FDESC3.EXT'    !  I/O API file desc. data structures
-        INCLUDE 'FLTERR.EXT'    !  error filter statement function
 
 C.........  EXTERNAL FUNCTIONS and their descriptions:
-        CHARACTER*2  CRLF
+        CHARACTER(2) CRLF
+        LOGICAL      DBLERR
         INTEGER      GETIFDSC  
 
-        EXTERNAL     CRLF, GETIFDSC
+        EXTERNAL     CRLF, DBLERR, GETIFDSC
 
 C...........   SUBROUTINE ARGUMENTS
         CHARACTER(*), INTENT(IN) :: DATDESC  ! data descriptions
@@ -73,16 +73,16 @@ C...........   Local variables
         INTEGER       XO      ! tmp x-offset  
         INTEGER       YO      ! tmp y-offset  
 
-        REAL*8        CHK_X   ! tmp val for checking subgrid even with grid
-        REAL*8        CHK_Y   ! tmp val for checking subgrid even with grid
+        REAL(8)       CHK_X   ! tmp val for checking subgrid even with grid
+        REAL(8)       CHK_Y   ! tmp val for checking subgrid even with grid
 
         LOGICAL, SAVE :: GFLAG  = .FALSE. ! true: grid settings have been init
         LOGICAL       :: SFLAG  = .FALSE. ! true: local error
 
-        CHARACTER*25    FILDESC  ! description of input file
-        CHARACTER*300   MESG     ! message buffer
+        CHARACTER(25)   FILDESC  ! description of input file
+        CHARACTER(300)  MESG     ! message buffer
 
-        CHARACTER*16 :: PROGNAME = 'CHKGRID' ! program name
+        CHARACTER(16) :: PROGNAME = 'CHKGRID' ! program name
 
 C***********************************************************************
 C   begin body of function CHKGRID
@@ -314,7 +314,7 @@ C.........  Initialize grid information
 
         END IF
 
-	IF( SFLAG ) EFLAG = SFLAG
+        IF( SFLAG ) EFLAG = SFLAG
 
         RETURN
 
