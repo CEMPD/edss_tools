@@ -54,14 +54,14 @@ case Linux2_alpha:
     breaksw
 case Linux2_x86ifc:
     setenv FC  ifc
-    setenv FFLAGS   "$FFLAGS -cl,${ETDSRC}/${EDSS_EXE}/edss.pcl -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
-    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
+    setenv FFLAGS   "$FFLAGS -I${ETINC} -I${IOINC} -I${FS_ROOT}"
+    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${FS_ROOT}"
     setenv LDIRS    "-L${TOOLS_BIN}"
     breaksw
 case  Linux2_x86pg:
     setenv FC  pgf90
-    setenv FFLAGS   "$FFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
-    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
+    setenv FFLAGS   "$FFLAGS -module ${FS_BIN} -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
+    setenv DBGFLAGS "$DBGFLAGS -module ${FS_BIN} -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
     setenv LDIRS    "-L${TOOLS_BIN}"
     breaksw
 default:

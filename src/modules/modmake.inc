@@ -15,4 +15,5 @@ $(MODGRID): $(ETDSRC)/modgrid.f $(ETINC)/IOPRVT3.EXT $(ETINC)/IOSTRG3.EXT
 	$(FC) $(FFLAGS) -c -o $@ $(ETDSRC)/modgrid.f
 	if ( test -f modgrid.mod ) ; then mv modgrid.mod $(ETMOD_OUT) ; fi
 	if ( test -f modgrid.M   ) ; then mv modgrid.M   $(ETMOD_OUT) ; fi
+#	if ( test -f modgrid.d   ) ; then mv modgrid.d   $(ETMOD_OUT) ; fi
 	if ( test -f MODGRID.mod ) ; then mv MODGRID.mod $(ETMOD_OUT) ; fi
