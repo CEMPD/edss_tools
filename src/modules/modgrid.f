@@ -41,7 +41,7 @@
 C...........   INCLUDES:
         INCLUDE 'IOPRVT3.EXT'   !  I/O API tools private string lengths
 
-!.........  Horiztonal grid information
+!.........  Horizontal grid information
         CHARACTER(LEN=IOVLEN3), PUBLIC :: GRDNM = ' '  ! grid name
         CHARACTER(LEN=IOVLEN3), PUBLIC :: COORD = ' '  ! coord system name
         INTEGER, PUBLIC :: GDTYP = -1     ! i/o api grid type code
@@ -62,7 +62,7 @@ C...........   INCLUDES:
         INTEGER, PUBLIC :: XOFF  = 0      ! subgrid offset (x-sub = x - xoff)
         INTEGER, PUBLIC :: YOFF  = 0      ! subgrid offset
         INTEGER, PUBLIC :: XOFF_A= 0      ! tmp subgrid offset (x-sub = x - xoff)
-        INTEGER, PUBLIC :: YOFF_A= 0      ! tmpsubgrid offset
+        INTEGER, PUBLIC :: YOFF_A= 0      ! tmp subgrid offset
         LOGICAL, PUBLIC :: OFFLAG = .FALSE. ! true: subgrid offset has been set
 
 !.........  Vertical structure information
