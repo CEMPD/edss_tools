@@ -19,7 +19,7 @@
 !
 ! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
 !                System
-! File: %W%
+! File: @(#)$Id$ 
 !
 ! COPYRIGHT (C) 2000, MCNC--North Carolina Supercomputing Center
 ! All Rights Reserved
@@ -33,8 +33,8 @@
 !
 ! env_progs@mcnc.org
 !
-! Pathname: %P%
-! Last updated: %G% %U%
+! Pathname: $Source$ 
+! Last updated: $Date$ 
 !
 !****************************************************************************
 

@@ -1,4 +1,4 @@
-# Version "%W% %P% %G% %U%
+# @(#)$Header$ 
 #
 # Include file for making modules and doing needed copies, etc.
 #

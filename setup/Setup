@@ -1,5 +1,7 @@
 #!/bin/csh -f
 #
+# @(#)$Header$
+#
 ## HEADER ########################################################
 #
 # This script sets up the environment variables needed for using running

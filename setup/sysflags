@@ -1,6 +1,6 @@
 #!/bin/csh -f
 
-#  %W% %P% %G% %U%
+# @(#)$Header$ 
 
 #  Determine operating system for compiling SMOKE
 source $EDSS_ROOT/scripts/platform
