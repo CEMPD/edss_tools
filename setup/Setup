@@ -9,8 +9,10 @@
 #
 ##################################################################
 
-setenv EDSS_SUBSYS /env/proj/edss/subsys
-
+if ( $?EDSS_SUBSYS ) then
+else
+   echo "ERROR: EDSS Tools \"Setup\" script requires setting of the EDSS_SUBSYS"
+   echo "       environment variable prior to using it."
 
 #  Set directories
    source set_dirs.scr
