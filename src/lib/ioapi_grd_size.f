@@ -6,7 +6,7 @@ C***********************************************************************
 C  function body starts at line
 C
 C  DESCRIPTION:
-C      This function returns the approximate size in bytes of a 
+C      This function returns the approximate size in megabytes of a 
 C      gridded I/O API file based on the number of columns, rows, 
 C      layers, variables, and time steps.
 C
@@ -63,10 +63,10 @@ C........  Calculate number of grid cells
        NCELLS = NCOLS * NROWS
        
 C........  Calculate size of header
-       HDRSIZE = 9860 + 116 * NVARS + 4 * NLAYS
+       HDRSIZE = ( 9860 + 116 * NVARS + 4 * NLAYS ) / 1000000
        
 C........  Calculate size of individual records
-       RECSIZE = 8 * NVARS + 4 * NLAYS * NVARS * NCELLS
+       RECSIZE = ( 8 * NVARS + 4 * NLAYS * NVARS * NCELLS ) / 1000000
 
 C........  Calculate total number of bytes in file       
        IOAPI_GRD_SIZE = HDRSIZE + RECSIZE * NSTEPS
