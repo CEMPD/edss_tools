@@ -54,8 +54,8 @@ case Linux2_alpha:
     breaksw
 case Linux2_x86ifc:
     setenv FC  ifc
-    setenv FFLAGS   "$FFLAGS -I${ETINC} -I${IOINC} -I${FS_ROOT}"
-    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${FS_ROOT}"
+    setenv FFLAGS   "$FFLAGS  -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
+    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
     setenv LDIRS    "-L${TOOLS_BIN}"
     breaksw
 case  Linux2_x86pg:
