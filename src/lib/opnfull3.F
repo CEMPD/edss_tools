@@ -1,0 +1,502 @@
+
+C.........................................................................
+C Version "@(#)$Header$"
+C EDSS/Models-3 I/O API.  Copyright (C) 1992-1999 MCNC
+C Distributed under the GNU LESSER GENERAL PUBLIC LICENSE version 2.1
+C See file "LGPL.txt" for conditions of use.
+C.........................................................................
+
+        LOGICAL FUNCTION  OPNFULL3( FNAME, FSTATUS, FULLNAME, PGNAME )
+
+C***********************************************************************
+C  function body starts at line  111
+C
+C  FUNCTION:  open Models-3 file with logical name FNAME, with
+C             file status FSTATUS = FSREAD3==1 for read-only,
+C             FSRDWR3==2 for read/write/update of existing files,
+C             FSNEW3==3 for read/write of new files, FSUNKN3==4
+C             for read/write/update of unknown (new vs. old) files,
+C             or FSCREA3==5 for delete-and-reopen for write.
+C             If opened for write, copies scenario description from 
+C             I/O STATE3.EXT to file's history, and name PGNAME of 
+C             caller to file's updater-name.  
+C             Returns TRUE if the file is already open.
+C
+C  RETURN VALUE:  TRUE iff it succeeds in opening the file, reading its
+C                 attributes, and storing the relevant ones in STATE3.EXT
+C
+C  PRECONDITIONS REQUIRED:  
+C       FSREAD3 or FSRDWR3:  File FNAME already exists.
+C       FSNEW3:  file must _not_ already exist.
+C       FSCREA3: file deleted and new file created if it already exist.
+C       FSCREA3, FSNEW3, FSUNKN3:  user must supply file description in 
+C	FDESC3.EXT COMMONs
+C
+C  SUBROUTINES AND FUNCTIONS CALLED:  INDEX1, INIT3, TRIMLEN
+C
+C  REVISION  HISTORY:
+C       prototype 3/92 by CJC
+C       modified  7/92 by CJC:  handles coordinate system, grid 
+C                               description attributes in file headers,
+C                               in an upward-compatible fashion.
+C       Modified  9/94 by CJC:  4-way mode of file opening (read-only, 
+C                               read-write, new, unknown, using parameter 
+C                               tokens from PARMS3.EXT); 
+C                               also BUFFERED virtual files.
+C       Modified  8/95 by CJC to support CLOSE3()
+C       Modified  5/96 by CJC to support new mode FSCREA3 for opening files.
+C       Modified  5/98 by CJC for OpenMP thread-safety
+C       Modified  4/97 by CJC to fix bug in "already-open" warning formats
+C       Modified  5/98 by CJC for OpenMP thread-safety
+C       Modified  5/99 by ALT for coupling-mode operation
+C       Modified  9/99 by CJC unification with KFOPEN()
+C***********************************************************************
+
+      IMPLICIT NONE
+
+C...........   INCLUDES:
+
+        INCLUDE 'PARMS3.EXT'
+        INCLUDE 'STATE3.EXT'
+        INCLUDE 'NETCDF.EXT'
+
+
+C...........   ARGUMENTS and their descriptions:
+
+        CHARACTER*(*)   FNAME    !  logical name of file to be opened
+        INTEGER         FSTATUS  !  read-only, read-write, new, or unknown
+        CHARACTER*(*)   FULLNAME ! full path and filename of file to be opened
+        CHARACTER*(*)   PGNAME   !  name of calling program
+
+
+C...........   EXTERNAL FUNCTIONS and their descriptions:
+
+        LOGICAL         CKDESC3 !  does header validity checks
+        LOGICAL         CHKFIL3 !  does work of checking file def consistency
+        LOGICAL         CLOSE3  !  closes files (if FSCREA3)
+        INTEGER         CRTBUF3 !  create "buffered" virtual files
+        LOGICAL         CRTFIL3 !  does work of creating new files
+        INTEGER         INDEX1  !  look up names in tables
+        INTEGER         INIT3   !  initialize I/O system files
+        LOGICAL         OPNFIL3 !  does work of opening old files
+        INTEGER         RMFILE  !  shell around UNIX "unlink()" system call
+        INTEGER         TRIMLEN !  length after trimming trailing blanks.
+
+        EXTERNAL        INDEX1, INIT3, RMFILE, TRIMLEN, 
+     &                  OPNFIL3, CRTBUF3, CRTFIL3, CHKFIL3, CLOSE3,
+     &                  INITBLK3      !  block data
+
+
+C...........   SCRATCH LOCAL VARIABLES and their descriptions:
+
+        INTEGER         IDUM    !  dummy for INIT3 return value
+        INTEGER         FID     !  subscript for STATE3 arrays
+        INTEGER         RWMODE  !  netCDF mode corresponding to RDONLY
+        INTEGER         IERR    !  netCDF error status return
+        LOGICAL         AFLAG   !  return value from INQUIRE
+        CHARACTER*256   MESG    !  for m3msg2, m3warn
+        CHARACTER*256   EQNAME  !  environment value of FNAME
+        CHARACTER*8     BNAME   !  for "BUFFERED", etc.
+        CHARACTER*16    FIL16   !  scratch file-name buffer
+        CHARACTER*16    PRG16   !  scratch  pgm-name buffer
+
+#ifdef IOAPICPL
+        LOGICAL  OPEN3V, UPDTVIR3
+        EXTERNAL OPEN3V, UPDTVIR3
+        CHARACTER *256 PGMNAME
+#endif
+
+C.............................................................................
+C   begin body of subroutine  OPNFULL3
+
+!$OMP   CRITICAL( S_LOGDEV )
+        IF ( .NOT. FINIT3 ) THEN
+            IDUM = INIT3()
+        END IF
+!$OMP   END CRITICAL( S_LOGDEV )
+
+        IF ( LEN( FNAME ) .GT. 16 ) THEN
+            MESG =
+     &      'Max file name length (16) exceeded for "' // FNAME // '"'
+            CALL M3MSG2( MESG )
+            OPNFULL3 = .FALSE.
+            RETURN
+        END IF
+
+
+C.......   Find netCDF index for the file, and check time step availability:
+
+        FIL16 = FNAME   !  fixed-length-16 scratch copy of name
+        FID   = INDEX1( FIL16, COUNT3, FLIST3 )
+
+        IF ( FID .NE. 0 ) THEN  !  file already open.  Consistency checks:
+
+            IF ( FSTATUS .EQ. FSNEW3 ) THEN
+
+                MESG =
+     &              'File ' // FIL16 // ' already opened; ' //
+     &              'cannot subsequently create it "NEW".'
+                CALL M3WARN( 'OPNFULL3', 0, 0, MESG )
+                OPNFULL3 = .FALSE.
+                RETURN
+
+            ELSE IF ( FSTATUS .EQ. FSUNKN3 ) THEN
+
+                IF( RONLY3( FID ) ) THEN
+
+                    MESG =
+     &              'File ' // FIL16 // ' already opened READONLY; ' //
+     &              'Cannot subsequently open it "UNKNOWN".'
+                    CALL M3WARN( 'OPNFULL3', 0, 0, MESG )
+                    OPNFULL3 = .FALSE.
+                    RETURN
+
+                ELSE 
+
+                    OPNFULL3 = CHKFIL3( FID ) 
+                    RETURN
+
+                END IF
+
+            ELSE IF ( RONLY3( FID ) .AND. FSTATUS .EQ. FSRDWR3 ) THEN
+
+                MESG =
+     &              'File ' // FIL16 // ' already opened READONLY; ' //
+     &              'cannot subsequently open it for READ/WRITE.'
+                CALL M3WARN( 'OPNFULL3', 0, 0, MESG )
+                OPNFULL3 = .FALSE.
+                RETURN
+
+            ELSE IF ( FSTATUS .EQ. FSCREA3 ) THEN
+
+                IF ( .NOT. CKDESC3( FIL16 ) ) THEN
+
+                    MESG = 'Error:  bad file description in FDESC'
+                    CALL M3WARN( 'OPNFULL3', 0, 0, MESG )
+                    FLIST3( FID ) = CMISS3
+                    OPNFULL3 = .FALSE.
+                    RETURN
+
+                END IF  !  if CKDESC3() failed
+
+                IF ( CLOSE3( FNAME ) ) THEN
+
+                    MESG = 'File ' // FIL16 // ' already opened. ' //
+     &                     'Closing, deleting, and re-opening it'
+                    CALL M3WARN( 'OPNFULL3', 0, 0, MESG )
+
+                ELSE
+
+                    MESG = 'File ' // FIL16 // ' already opened. ' //
+     &                  'Could not close to reopen with status FSCREA3'
+                    CALL M3WARN( 'OPNFULL3', 0, 0, MESG )
+                    OPNFULL3 = .FALSE.
+                    RETURN
+
+                END IF
+
+            ELSE
+
+                OPNFULL3 = .TRUE.
+                RETURN
+
+            END IF
+
+        ELSE	!  else file not yet open:  check file desc. for consistency
+
+            IF ( FSTATUS .EQ. FSNEW3   .OR.
+     &           FSTATUS .EQ. FSUNKN3  .OR.
+     &           FSTATUS .EQ. FSCREA3 ) THEN
+
+                IF ( .NOT. CKDESC3( FIL16 ) ) THEN
+
+                    MESG = 'Error:   bad file description in FDESC'
+                    CALL M3WARN( 'OPNFULL3', 0, 0, MESG )
+                    OPNFULL3 = .FALSE.
+                    RETURN
+
+                END IF
+
+            END IF	!  if status new, unknown, or create/truncate
+
+        END IF  !  if file already open, or not
+
+        FID = INDEX1( CMISS3, MXFILE3, FLIST3 )
+        IF ( FID .EQ. 0 ) THEN
+            MESG =
+     &          'Could not open ' // FIL16 //
+     &          'Maximum number of files already have been opened.'
+            CALL M3WARN( 'OPNFULL3', 0, 0, MESG )
+            OPNFULL3 = .FALSE.
+            RETURN
+        END IF
+
+
+C.......  Find the value EQNAME for logical name FNAME.
+C.......  If EQNAME contains "-v" or "-V" mark this file as volatile:
+
+        IF( FULLNAME == 'NONE' ) THEN
+            CALL NAMEVAL( FIL16, EQNAME )
+        ELSE
+            EQNAME = FULLNAME
+        END IF
+
+        IDUM = MAX ( INDEX( EQNAME, '-v' ) ,
+     &               INDEX( EQNAME, '-V' ) )
+
+        IF ( IDUM .GT. 0 ) THEN
+            EQNAME( IDUM:IDUM+1 ) = '  '        !  fix the '-v' (etc.)
+            VOLAT3( FID ) = .TRUE.              !  volatile file
+        ELSE
+            VOLAT3( FID ) = .FALSE.
+        END IF
+
+        FLIST3( FID ) = FIL16
+        RONLY3( FID ) = ( FSTATUS .EQ. FSREAD3 )
+
+
+C.......   Open or create new file, according to FSTATUS and existence 
+C.......   of the file:
+
+        BNAME = EQNAME( 1:8 )   ! normalize case for "BUFFERED" files
+        CALL UPCASE( BNAME )
+
+        IF ( BNAME .EQ. 'BUFFERED' ) THEN
+
+            IF ( 0 .NE. CRTBUF3( FID ) ) THEN
+                OPNFULL3  = .TRUE.
+                CALL OPNLOG3 ( FID , EQNAME, FSTATUS )
+                COUNT3 = MAX( COUNT3, FID )
+            ELSE
+                FLIST3( FID ) = CMISS3
+                OPNFULL3 = .FALSE.
+            END IF
+
+            RETURN
+
+        ELSE IF ( BNAME .EQ. 'VIRTUAL ' ) THEN
+
+#ifdef IOAPICPL
+           PLIST3(FID) = EQNAME(9:256)
+           CDFID3( FID ) = VIRFIL3
+           CALL GETARG(0,PGMNAME)
+           OPNFULL3 = OPEN3V(PLIST3(FID), FSTATUS, PGMNAME)
+           IF ( OPNFULL3 ) THEN
+              IF ( UPDTVIR3( FID ) ) THEN
+                 CALL OPNLOG3 ( FID , EQNAME, FSTATUS )
+                 COUNT3 = MAX( COUNT3, FID )
+              ELSE
+                 FLIST3( FID ) = CMISS3
+                 OPNFULL3 = .FALSE.
+              END IF
+           ELSE
+              FLIST3( FID ) = CMISS3
+           ENDIF
+           RETURN
+#endif
+
+#ifndef IOAPICPL
+            CALL M3WARN( 'OPNFULL3', 0, 0, 
+     &      'VIRTUAL files not implemented in this I/O API version' )
+            FLIST3( FID ) = CMISS3
+            OPNFULL3 = .FALSE.
+            RETURN
+#endif
+
+        ELSE
+
+            INQUIRE ( FILE = EQNAME, EXIST = AFLAG )
+
+        END IF        !  if buffered, else if virtual, or not
+
+        PRG16  = PGNAME
+        IF ( FSTATUS .EQ. FSREAD3 ) THEN        !  read-only
+
+            IF ( AFLAG ) THEN           !  file exists:
+
+                RWMODE = NF_NOWRITE
+                IF ( OPNFIL3( EQNAME, FID, RWMODE, PRG16 ) ) THEN
+                    OPNFULL3 = .TRUE.
+                ELSE
+                    FLIST3( FID ) = CMISS3
+                    OPNFULL3 = .FALSE.
+                    RETURN
+                END IF
+
+            ELSE                        !  file does not exist
+
+                MESG = FIL16 // ':' // EQNAME( 1:TRIMLEN( EQNAME ) )
+                CALL M3MSG2( MESG )
+                CALL M3WARN( 'OPNFULL3', 0, 0, 'File not available.' )
+                FLIST3( FID ) = CMISS3
+                OPNFULL3 = .FALSE.
+                RETURN
+
+            END IF      !  if file exist or not (file status read-only)
+
+        ELSE IF ( FSTATUS .EQ. FSRDWR3 ) THEN   !  read-write
+
+            IF ( AFLAG ) THEN           !  if file exists:  open it
+
+                RWMODE = NF_WRITE
+                IF ( OPNFIL3( EQNAME, FID, RWMODE, PRG16 ) ) THEN
+                    OPNFULL3 = .TRUE.
+                ELSE
+                    FLIST3( FID ) = CMISS3
+                    OPNFULL3 = .FALSE.
+                    RETURN
+                END IF
+
+            ELSE                        !  file does not exist
+
+                MESG = FIL16 // ':' // EQNAME( 1:TRIMLEN( EQNAME ) )
+                CALL M3MSG2( MESG )
+                CALL M3WARN( 'OPNFULL3', 0, 0, 'File not available.' )
+                FLIST3( FID ) = CMISS3
+                OPNFULL3 = .FALSE.
+                RETURN
+
+            END IF      !  if file exists or not (file status read-write)
+
+        ELSE IF ( FSTATUS .EQ. FSNEW3  ) THEN   !  new  (create)
+
+            IF ( AFLAG ) THEN           !  file exists (error)
+
+                FLIST3( FID ) = CMISS3
+                OPNFULL3 = .FALSE.
+                RETURN
+
+            ELSE IF ( CRTFIL3( EQNAME, FID, PRG16 ) ) THEN
+
+                OPNFULL3 = .TRUE.
+
+            ELSE
+
+                FLIST3( FID ) = CMISS3
+                OPNFULL3 = .FALSE.
+                RETURN
+
+            END IF     !  if file exists or not (file status create)
+
+        ELSE IF ( FSTATUS .EQ. FSUNKN3 ) THEN   !  unknown
+
+            IF ( AFLAG ) THEN   !  file exists:  open and check consistency
+
+                RWMODE = NF_WRITE
+                IF ( OPNFIL3( EQNAME, FID, RWMODE, PRG16 ) ) THEN
+
+                    IF ( CHKFIL3( FID ) ) THEN  !  consistency check
+
+                        OPNFULL3 = .TRUE.
+
+                    ELSE
+
+                        FLIST3( FID ) = CMISS3
+                        OPNFULL3 = .FALSE.
+                        CALL NCCLOS( CDFID3( FID ), IERR )
+                        RETURN 
+
+                    END IF      !  if consistency check succeeded or failed
+
+                ELSE            !  OPNFIL3() failed
+
+                    CALL NCCLOS( CDFID3( FID ), IERR )
+                    FLIST3( FID ) = CMISS3
+                    OPNFULL3 = .FALSE.
+                    RETURN
+
+                END IF          !  if OPNFIL3() succeeded or not
+
+            ELSE IF ( CRTFIL3( EQNAME, FID, PRG16 ) ) THEN
+
+                OPNFULL3 = .TRUE.
+
+            ELSE    !  CRTFIL3() failed:
+
+                FLIST3( FID ) = CMISS3
+                OPNFULL3 = .FALSE.
+                RETURN
+
+            END IF      !  if file exists or can be created or not
+
+        ELSE IF ( FSTATUS .EQ. FSCREA3 ) THEN   !  truncate and create new
+
+            IF ( AFLAG ) THEN   !  file exists:  remove it first.
+
+                IERR = RMFILE( EQNAME )
+                IF ( IERR .NE. 0 ) THEN
+                    WRITE ( MESG, 93010 ) 'Error number', IERR,
+     &                  'removing ' // FIL16 // ' from pathname:'
+                     CALL M3WARN( 'OPNFULL3', 0, 0, MESG )
+                     CALL M3MSG2( EQNAME )
+                    OPNFULL3 = .FALSE.
+                    RETURN
+                END IF	!  if RMFILE failed
+
+            END IF  !  if file exists
+
+            IF ( CRTFIL3( EQNAME, FID, PRG16 ) ) THEN
+
+                OPNFULL3 = .TRUE.
+
+            ELSE    !  CRTFIL3() failed:
+
+                FLIST3( FID ) = CMISS3
+                OPNFULL3 = .FALSE.
+                RETURN
+
+            END IF  !  if CRTFIL3() succeeded or not
+
+        ELSE            !  illegal FSTATUS value:
+
+            CALL M3WARN( 'OPNFULL3', 0, 0, 
+     &      'File opening error:  illegal FSTATUS argument.' )
+            CALL M3MSG2( 
+     &      'Legal values: 1-READONLY, 2-READ/WRITE, 3-NEW, 4-UNKNOWN')
+             WRITE ( MESG, 93010 ) 'Value supplied by caller:', FSTATUS
+            CALL M3MSG2( MESG )
+
+            FLIST3( FID ) = CMISS3
+            OPNFULL3 = .FALSE.
+            RETURN
+
+        END IF  !  read-only, read-write, new, unknown, create/trunc, or illegal
+
+
+
+C.......   Update COUNT3 to account for new file, and log it:
+
+        IF ( VOLAT3( FID ) ) THEN     !  volatile file:  synch with disk
+            CALL NCSNC( CDFID3( FID ), IERR )
+            IF ( IERR .NE. 0 ) THEN
+                CALL M3ABORT( FLIST3( FID ), CDFID3( FID ), IERR,
+     &          'Error with disk synchronization' )
+                OPNFULL3 = .FALSE.
+                RETURN
+            END IF              !  if synch failed
+        END IF          !  if file is volatile
+
+        COUNT3 = MAX( COUNT3, FID )
+        CALL OPNLOG3 ( FID , EQNAME, FSTATUS )
+
+        OPNFULL3 = .TRUE.
+
+        RETURN
+
+C******************  FORMAT  STATEMENTS   ******************************
+
+C...........   Error and warning message formats..... 91xxx
+
+91001   FORMAT ( //5X , '>>> WARNING in subroutine OPNFULL3 <<<',
+     &            /5X , 3A,
+     &            /5X , A , I5, // )
+
+91010   FORMAT ( //5X , '>>> WARNING in subroutine OPNFULL3 <<<',
+     &            3 ( /5X , A , : ) , I7, // )
+
+C...........   Internal buffering formats..... 93xxx
+
+93010   FORMAT ( 5 ( A, :, I9, :, 2X ) )
+
+        END
+
