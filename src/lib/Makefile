@@ -10,7 +10,7 @@
 include $(ETDSRC)/modmake.inc
 
 FILES_A = chkgrid.o  \
-          check3.o     chkreal.o    getfline.o   hdrmiss3.o   parsline.o \
+          chkreal.o    getfline.o   hdrmiss3.o   parsline.o \
           checkmem.o   dscm3grd.o   getifdsc.o   lambert.o    polmesg.o  \
           chkgrid.o    fltrneg.o    getm3epi.o   multunit.o   rd3mask.o  \
           chkint.o     getcfdsc.o   getnlist.o   padzero.o    unitfac.o  \
@@ -34,7 +34,7 @@ debug: $(IOMODALL) $(FILES_A)
 #
 
 chkgrid.o: $(MODGRID) $(ETINC)/FLTERR.EXT
-	$(FC) $(FFLAGS) -c -o $@ $<
+	$(FC) $(FFLAGS) -c -o $@ chkgrid.f
 
 
 clean:
