@@ -17,26 +17,25 @@
 !
 !***************************************************************************
 !
-! Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
-!                System
+! Project Title: EDSS Tools Library
 ! File: @(#)$Id$ 
 !
-! COPYRIGHT (C) 2001, MCNC--North Carolina Supercomputing Center
+! COPYRIGHT (C) 2004, Environmental Modeling for Policy Development
 ! All Rights Reserved
 !
-! See file COPYRIGHT for conditions of use.
+! Carolina Environmental Program
+! University of North Carolina at Chapel Hill
+! 137 E. Franklin St., CB# 6116
+! Chapel Hill, NC 27599-6116
 !
-! Environmental Programs Group
-! MCNC--North Carolina Supercomputing Center
-! P.O. Box 12889
-! Research Triangle Park, NC  27709-2889
-!
-! env_progs@mcnc.org
+! smoke@unc.edu
 !
 ! Pathname: $Source$ 
 ! Last updated: $Date$ 
 !
 !****************************************************************************
+        
+        IMPLICIT NONE
 
 C...........   INCLUDES:
         INCLUDE 'IOPRVT3.EXT'   !  I/O API tools private string lengths
