@@ -14,7 +14,7 @@ FILES_A = chkgrid.o    dscm3grd.o dscm3lay.o \
           checkmem.o   dscm3grd.o   getifdsc.o   lambert.o    polmesg.o  \
           chkgrid.o    fltrneg.o    getm3epi.o   multunit.o   rd3mask.o  \
           chkint.o     getcfdsc.o   getnlist.o   padzero.o    unitfac.o  \
-          unitmatch.o
+          unitmatch.o  isopen.o     opnfull3.o
 
 INCLUDES = $(ETINC)/IOCNST3.EXT $(ETINC)/IOSTRG3.EXT
 
@@ -36,6 +36,8 @@ debug: $(IOMODALL) $(FILES_A)
 chkgrid.o: $(MODGRID) $(ETINC)/FLTERR.EXT
 	$(FC) $(FFLAGS) -c -o $@ chkgrid.f
 
+opnfull3.o:
+	$(FC) $(FFLAGS) -cpp -macro_expand -c -o $@ opnfull3.F
 
 clean:
 	/bin/rm *.o
