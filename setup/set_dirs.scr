@@ -1,0 +1,14 @@
+#!/bin/csh -f
+#
+## HEADER ########################################################
+#
+setenv TOOLS_ROOT $EDSS_SUBSYS/tools    # source code for i/o api tools
+setenv IOINC      $TOOLS_ROOT/inc       # source code for include files 
+setenv IOMOD_SRC  $TOOLS_ROOT/modules   # source code for tools modules
+setenv IOMAIN_SRC $TOOLS_ROOT/main      # source code for tools programs
+setenv IOLIB_SRC  $TOOLS_ROOT/lib       # source code for tools library
+
+# Set bin directory if executable type has been set
+if ( $?EDSS_EXE ) then
+   setenv TOOLS_BIN $TOOLS_ROOT/$EDSS_EXE
+endif

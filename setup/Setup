@@ -1,0 +1,18 @@
+#!/bin/csh -f
+#
+## HEADER ########################################################
+#
+# This script sets up the environment variables needed for using running
+# the Txt2asci converter for Innogy.
+#
+##################################################################
+
+setenv EDSS_SUBSYS /env/proj/edss/subsys
+
+
+#  Set directories
+   source set_dirs.scr
+
+#  Get system-specific flags
+   source sysflags
+
