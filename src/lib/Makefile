@@ -14,7 +14,7 @@ FILES_A = chkgrid.o    dscm3grd.o dscm3lay.o \
           checkmem.o   dscm3grd.o   getifdsc.o   lambert.o    polmesg.o  \
           chkgrid.o    fltrneg.o    getm3epi.o   multunit.o   rd3mask.o  \
           chkint.o     getcfdsc.o   getnlist.o   padzero.o    unitfac.o  \
-          unitmatch.o  padnzero.o
+          unitmatch.o  padnzero.o   promptwhat.o openphys.o
 
 INCLUDES = $(ETINC)/IOCNST3.EXT $(ETINC)/IOSTRG3.EXT
 
