@@ -39,7 +39,10 @@ C***************************************************************************
 
 C.........  MODULES for public variables
 C.........  This module contains the global variables for the 3-d grid
-        USE MODGRID
+        USE MODGRID, ONLY: NCOLS, NROWS, XORIG, YORIG, XOFF, YOFF,
+     &                     GDTYP, XCELL, YCELL, XCENT, YCENT,
+     &                     P_ALP, P_BET, P_GAM, OFFLAG, GRDNM,
+     &                     XOFF_A, YOFF_A, XDIFF, YDIFF, NGRID
 
         IMPLICIT NONE
 
