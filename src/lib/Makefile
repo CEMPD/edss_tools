@@ -16,7 +16,7 @@ FILES = \
   fltrneg.o    getcfdsc.o   getfline.o   getifdsc.o   getm3epi.o   getnlist.o  \
   hdrmiss3.o   ioapi_grd_size.o          multunit.o   openphys.o   padnzero.o  \
   padzero.o    parsline.o   polmesg.o    rd3mask.o    rdsetmask.o  unitfac.o   \
-  unitmatch.o
+  unitmatch.o  m3mesg.o
 
 all: lib
 
@@ -31,7 +31,7 @@ debug: $(IOMODALL) $(FILES)
 # Module and include dependencies
 #
 
-chkgrid.o:   $(MODGRID) $(ETINC)/IOCNST3.EXT $(IOINC)/PARMS3.EXT $(IOINC)/FDESC3.EXT $(ETINC)/FLTERR.EXT
+chkgrid.o:   $(MODGRID) $(ETINC)/IOCNST3.EXT $(IOINC)/PARMS3.EXT $(IOINC)/FDESC3.EXT
 dscm3grd.o:  $(ETINC)/IOCNST3.EXT $(ETINC)/IOSTRG3.EXT $(ETINC)/IOPRVT3.EXT $(IOINC)/PARMS3.EXT
 dscm3lay.o:  $(ETINC)/IOCNST3.EXT $(IOINC)/PARMS3.EXT
 getcfdsc.o:  $(ETINC)/IOCNST3.EXT $(IOINC)/PARMS3.EXT
