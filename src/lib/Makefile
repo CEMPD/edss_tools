@@ -16,7 +16,7 @@ FILES = \
   fltrneg.o    getcfdsc.o   getfline.o   getifdsc.o   getm3epi.o   getnlist.o  \
   hdrmiss3.o   ioapi_grd_size.o          multunit.o   openphys.o   padnzero.o  \
   padzero.o    parsline.o   polmesg.o    rd3mask.o    rdsetmask.o  unitfac.o   \
-  unitmatch.o  m3mesg.o
+  unitmatch.o  m3mesg.o     flterr.o
 
 all: lib
 
