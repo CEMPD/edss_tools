@@ -7,7 +7,7 @@ C EDSS/Models-3 I/O API.  Portions copyright (C) 1992-1997 MCNC
 C See file "COPYRIGHT.txt" for conditions of use.
 C.........................................................................
 
-C Version "@(#)lambert.F	1.1 /pub/storage/edss/framework/src/smoke/emlib/SCCS/s.lambert.F 18 Sep 1996 12:38:32
+C 
       
         LOGICAL FUNCTION LAMBERT( P_ALP_IN, P_BET_IN, P_GAM_IN, 
      &                            XCENT_IN, YCENT_IN )
