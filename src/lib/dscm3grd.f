@@ -205,23 +205,23 @@ C.............  Open grid file
 
 C.............  Initialize grid setting to missing
             DMISS3  = DBLE( AMISS3 )
-            GNAME	= ' '
+            GNAME   = ' '
             GDESC   = ' '
-            CNAME	= ' '
-            CTYPE	= IMISS3
+            CNAME   = ' '
+            CTYPE   = IMISS3
             PUNIT   = ' '
-            P_ALP	= DMISS3
-            P_BET	= DMISS3
-            P_GAM	= DMISS3
-            XCENT	= DMISS3
-            YCENT	= DMISS3
-            XORIG	= DMISS3
-            YORIG	= DMISS3
-            XCELL	= DMISS3
-            YCELL	= DMISS3
-            NCOLS	= IMISS3
-            NROWS	= IMISS3
-            NTHIK	= IMISS3
+            P_ALP   = DMISS3
+            P_BET   = DMISS3
+            P_GAM   = DMISS3
+            XCENT   = DMISS3
+            YCENT   = DMISS3
+            XORIG   = DMISS3
+            YORIG   = DMISS3
+            XCELL   = DMISS3
+            YCELL   = DMISS3
+            NCOLS   = IMISS3
+            NROWS   = IMISS3
+            NTHIK   = IMISS3
 
 C.............  Make sure read it at the start of the file
             REWIND( IDEV )
