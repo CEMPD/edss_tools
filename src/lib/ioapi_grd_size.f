@@ -1,0 +1,76 @@
+
+       INTEGER FUNCTION IOAPI_GRD_SIZE( NCOLS, NROWS, NLAYS, 
+     &                                  NVARS, NSTEPS )
+
+C***********************************************************************
+C  function body starts at line
+C
+C  DESCRIPTION:
+C      This function returns the approximate size in bytes of a 
+C      gridded I/O API file based on the number of columns, rows, 
+C      layers, variables, and time steps.
+C
+C  PRECONDITIONS REQUIRED:
+
+C  SUBROUTINES AND FUNCTIONS CALLED:
+C
+C  REVISION  HISTORY:
+C     Created by C. Seppanen 3/03
+C
+C**************************************************************************
+C
+C Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
+C                System
+C File: @(#)$Id$
+C
+C COPYRIGHT (C) 2003, MCNC--North Carolina Supercomputing Center
+C All Rights Reserved
+C
+C See file COPYRIGHT for conditions of use.
+C
+C Environmental Programs Group
+C MCNC--North Carolina Supercomputing Center
+C P.O. Box 12889
+C Research Triangle Park, NC  27709-2889
+C
+C smoke@emc.mcnc.org
+C
+C Pathname: $Source$
+C Last updated: $Date$ 
+C
+C***************************************************************************
+
+       IMPLICIT NONE
+       
+C........  Function arguments
+       INTEGER, INTENT (IN) :: NCOLS   ! number of columns
+       INTEGER, INTENT (IN) :: NROWS   ! number of rows
+       INTEGER, INTENT (IN) :: NLAYS   ! number of layers
+       INTEGER, INTENT (IN) :: NVARS   ! number of variables
+       INTEGER, INTENT (IN) :: NSTEPS  ! number of time steps
+
+C........  Other local variables
+       INTEGER              NCELLS     ! number of grid cells
+       INTEGER              HDRSIZE    ! size of header in bytes
+       INTEGER              RECSIZE    ! size of single record in bytes
+
+       CHARACTER(LEN=16) :: PROGNAME = 'IOAPI_GRD_SIZE'  ! program name
+
+C***********************************************************************
+C   begin body of function IOAPI_GRD_SIZE
+
+C........  Calculate number of grid cells
+       NCELLS = NCOLS * NROWS
+       
+C........  Calculate size of header
+       HDRSIZE = 9860 + 116 * NVARS + 4 * NLAYS
+       
+C........  Calculate size of individual records
+       RECSIZE = 8 * NVARS + 4 * NLAYS * NVARS * NCELLS
+
+C........  Calculate total number of bytes in file       
+       IOAPI_GRD_SIZE = HDRSIZE + RECSIZE * NSTEPS
+
+       RETURN
+      
+       END FUNCTION IOAPI_GRD_SIZE
