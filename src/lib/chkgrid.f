@@ -2,7 +2,7 @@
         SUBROUTINE CHKGRID( DATDESC, FTYPE, CHKLEVEL, EFLAG )
 
 C***********************************************************************
-C  subroutine body starts at line 90
+C  subroutine body starts at line 91
 C
 C  DESCRIPTION:
 C      This subroutine updates the grid information and compares to 
@@ -20,7 +20,7 @@ C Project Title: Sparse Matrix Operator Kernel Emissions (SMOKE) Modeling
 C                System
 C File: @(#)$Id$
 C
-C COPYRIGHT (C) 2000, MCNC--North Carolina Supercomputing Center
+C COPYRIGHT (C) 2002, MCNC--North Carolina Supercomputing Center
 C All Rights Reserved
 C
 C See file COPYRIGHT for conditions of use.
@@ -262,6 +262,8 @@ C                       not temporary
                         YOFF = YOFF_A
                         IF( XOFF .NE. 0 .OR. YOFF .NE. 0 ) 
      &                      OFFLAG = .TRUE.
+                        XDIFF = NCOLS - NC
+                        YDIFF = NROWS - NR
                         XORIG = XORIG3D
                         YORIG = YORIG3D
                         NCOLS = NC
