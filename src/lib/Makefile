@@ -36,5 +36,5 @@ debug: $(IOMODALL) $(FILES_A)
 chkgrid.o: $(MODGRID) $(ETINC)/FLTERR.EXT
 	$(FC) $(FFLAGS) -c -o $@ chkgrid.f
 
-clean:
-	/bin/rm *.o
+clean: 
+	/bin/rm -f *.o $(ETDSRC)/*.o $(ETDSRC)/*.mod $(ETDSRC)/*.M

@@ -5,6 +5,8 @@
 # Set number of iterations
 set iter = $#argv
 
+source ../../setup/Setup
+
 # Loop through arguments
 
 # Make all code for argument list
