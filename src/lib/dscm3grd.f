@@ -84,6 +84,7 @@ C...........   EXTERNAL FUNCTIONS:
         
 C...........   Local parameters
         INTEGER, PARAMETER :: MXGRDTYP = 13
+        INTEGER, PARAMETER :: M3CHAR = 7
 
 C...........   Grid types and names arrays
         INTEGER      :: GRDTYPES( MXGRDTYP ) = ( / LATGRD3
