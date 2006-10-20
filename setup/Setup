@@ -9,16 +9,16 @@
 #
 ##################################################################
 
-if ( $?EDSS_SUBSYS ) then
+if ( $?SMK_SUBSYS ) then
 
    #  Set directories
-   source $EDSS_SUBSYS/edss_tools/setup/set_dirs.scr
+   source $SMK_SUBSYS/edss_tools/setup/set_dirs.scr
 
    #  Get system-specific flags
-   source $EDSS_SUBSYS/edss_tools/setup/sysflags
+   source $SMK_SUBSYS/edss_tools/setup/sysflags
 
 else 
-   echo "ERROR: EDSS Tools \"Setup\" script requires setting of the EDSS_SUBSYS"
+   echo "ERROR: EDSS Tools \"Setup\" script requires setting of the SMK_SUBSYS"
    echo "       environment variable prior to using it."
    set status = 1
 
