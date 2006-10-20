@@ -3,68 +3,68 @@
 # @(#)$Header$ 
 
 #  Determine operating system for compiling SMOKE
-source $EDSS_ROOT/scripts/platform
+   source $SMK_HOME/scripts/platform
 
 if ( $status != 0 ) then
     exit( $status )
 endif
 
-source $EDSS_SUBSYS/filesetapi/Setup
+source $SMK_SUBSYS/filesetapi/Setup
 
 # Make directories for library, object files, and executables
-setenv    TOOLS_BIN "$TOOLS_ROOT/$EDSS_EXE"
+setenv    TOOLS_BIN "$TOOLS_ROOT/$SMOKE_EXE"
 if( ! -e $TOOLS_BIN ) mkdir -p $TOOLS_BIN
-if( ! -e $ETDSRC/$EDSS_EXE ) mkdir -p $ETDSRC/$EDSS_EXE
+if( ! -e $ETDSRC/$SMOKE_EXE ) mkdir -p $ETDSRC/$SMOKE_EXE
 
-switch ( $EDSS_EXE )
+switch ( $SMOKE_EXE )
   case IRIXn32f90:
   case IRIX6f90:
   case IRIXn64f90:
-    setenv FFLAGS   "$FFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
-    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE}  -I${FS_ROOT}"
+    setenv FFLAGS   "$FFLAG  -I${ETINC} -I${IOINC} -I${ETDSRC}/${SMOKE_EXE} -I${FS_ROOT}"
+    setenv DBGFLAGS "$DBGFLAG -I${ETINC} -I${IOINC} -I${ETDSRC}/${SMOKE_EXE}  -I${FS_ROOT}"
     setenv LDIRS    "-L${TOOLS_BIN}"
-    breaksw
+  breaksw
   case SunOS5f90:
 #   NOTE: -Bstatic caused problems with ENVYN (perhaps because not
 #         using I/O API compiled with f90 ?)
-    setenv FFLAGS   "$FFLAGS -I${ETINC} -I${IOINC} -M${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
-    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -M${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
+    setenv FFLAGS   "$FFLAG -I${ETINC} -I${IOINC} -M${ETDSRC}/${SMOKE_EXE} -I${FS_ROOT}"
+    setenv DBGFLAGS "$DBGFLAG -I${ETINC} -I${IOINC} -M${ETDSRC}/${SMOKE_EXE} -I${FS_ROOT}"
     setenv LDIRS    "-L${TOOLS_BIN}"
     breaksw
 case HP_UX11f90:
-    setenv FFLAGS   "$FFLAGS  -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
-    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
+    setenv FFLAGS   "$FFLAG  -I${ETINC} -I${IOINC} -I${ETDSRC}/${SMOKE_EXE} -I${FS_ROOT}"
+    setenv DBGFLAGS "$DBGFLAG -I${ETINC} -I${IOINC} -I${ETDSRC}/${SMOKE_EXE} -I${FS_ROOT}"
     setenv LDIRS    "+U77 -Wl,-L,${TOOLS_BIN}"
     breaksw
 case AIX4n64f90:
 case AIX4f90:
-    setenv FFLAGS   "$FFLAGS  -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
-    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
+    setenv FFLAGS   "$FFLAG  -I${ETINC} -I${IOINC} -I${ETDSRC}/${SMOKE_EXE} -I${FS_ROOT}"
+    setenv DBGFLAGS "$DBGFLAG -I${ETINC} -I${IOINC} -I${ETDSRC}/${SMOKE_EXE} -I${FS_ROOT}"
     setenv LDIRS    "-L${TOOLS_BIN} -lxlsmp"
     breaksw
 case Linux2_alpha:
-    setenv FFLAGS   "$FFLAGS  -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
-    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
+    setenv FFLAGS   "$FFLAG  -I${ETINC} -I${IOINC} -I${ETDSRC}/${SMOKE_EXE} -I${FS_ROOT}"
+    setenv DBGFLAGS "$DBGFLAG -I${ETINC} -I${IOINC} -I${ETDSRC}/${SMOKE_EXE} -I${FS_ROOT}"
     setenv LDIRS    "-L${TOOLS_BIN}"
     breaksw
 case Linux2_x86ifc:
-    setenv FFLAGS   "$FFLAGS  -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
-    setenv DBGFLAGS "$DBGFLAGS -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
+    setenv FFLAGS   "$FFLAG  -I${ETINC} -I${IOINC} -I${ETDSRC}/${SMOKE_EXE} -I${FS_ROOT}"
+    setenv DBGFLAGS "$DBGFLAG -I${ETINC} -I${IOINC} -I${ETDSRC}/${SMOKE_EXE} -I${FS_ROOT}"
     setenv LDIRS    "-L${TOOLS_BIN}"
     breaksw
 case  Linux2_x86pg:
-    setenv FFLAGS   "$FFLAGS -module ${FS_BIN} -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
-    setenv DBGFLAGS "$DBGFLAGS -module ${FS_BIN} -I${ETINC} -I${IOINC} -I${ETDSRC}/${EDSS_EXE} -I${FS_ROOT}"
+    setenv FFLAGS   "$FFLAG -module ${FS_BIN} -I${ETINC} -I${IOINC} -I${ETDSRC}/${SMOKE_EXE} -I${FS_ROOT}"
+    setenv DBGFLAGS "$DBGFLAG -module ${FS_BIN} -I${ETINC} -I${IOINC} -I${ETDSRC}/${SMOKE_EXE} -I${FS_ROOT}"
     setenv LDIRS    "-L${TOOLS_BIN}"
     breaksw
 default:
-    echo "Do not know about executable format "$EDSS_EXE
+    echo "Do not know about executable format "$SMOKE_EXE
     exit( 2 )
 endsw
 
 echo " "
 echo "Host name:             "`hostname`
-echo "Platform type:         $EDSS_EXE"
+echo "Platform type:         $SMOKE_EXE"
 echo "Executable directory:  $TOOLS_BIN"
 echo " "
 
