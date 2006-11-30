@@ -2,7 +2,7 @@
 #
 # Include file for making modules and doing needed copies, etc.
 #
-ETMOD_OUT = $(ETDSRC)/$(EDSS_EXE)
+ETMOD_OUT = $(ETDSRC)/$(SMOKE_EXE)
 
 MODGRID  = $(ETMOD_OUT)/modgrid.o
 
