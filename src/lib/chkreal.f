@@ -92,8 +92,10 @@ C   begin body of function CHKREAL
             IF( CBUF .EQ. ' ' ) SPACFLAG = .TRUE.
             IF( CBUF .EQ. '.' ) PERDFLAG = .TRUE.
             IF( CBUF .EQ. '-' ) NEGVFLAG = .TRUE.
-            IF( CBUF .EQ. 'E' ) EXPOFLAG = .TRUE.
-
+            IF( CBUF .EQ. 'E' ) THEN
+		EXPOFLAG = .TRUE.
+                NEGVFLAG = .FALSE.  ! Reinitialize after exponent
+            END IF
         END DO    
 
         IF( BUFFER .EQ. '.' ) STRING = '0'
