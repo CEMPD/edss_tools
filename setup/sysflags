@@ -36,6 +36,7 @@ case HP_UX11f90:
     setenv DBGFLAGS "$DBGFLAG -I${ETINC} -I${IOINC} -I${ETDSRC}/${SMOKE_EXE} -I${FS_ROOT}"
     setenv LDIRS    "+U77 -Wl,-L,${TOOLS_BIN}"
     breaksw
+case AIX5f90:
 case AIX4n64f90:
 case AIX4f90:
     setenv FFLAGS   "$FFLAG  -I${ETINC} -I${IOINC} -I${ETDSRC}/${SMOKE_EXE} -I${FS_ROOT}"
