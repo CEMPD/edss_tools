@@ -63,7 +63,6 @@ C...........   EXTERNAL FUNCTIONS:
         
 C...........   Local parameters
         INTEGER, PARAMETER :: MXLAYTYP = 6
-        INTEGER, PARAMETER :: M3CHAR = 7
 
 C...........   Layer structure names arrays
         CHARACTER(7):: LAYNAMES( MXLAYTYP ) = ( / 'VGSGPH3'
