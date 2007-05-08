@@ -81,7 +81,7 @@ C...........   Other local variables
         CHARACTER    :: DOUBLEQ = '"'
         CHARACTER    :: SINGLEQ = "'"  
         CHARACTER    :: PERIOD  = '.' 
-        CHARACTER       QUOTVAL          !  value of starting quote 
+        CHARACTER    :: QUOTVAL = ' '    !  value of starting quote 
 
         CHARACTER(300)  MESG             ! message buffer
 
