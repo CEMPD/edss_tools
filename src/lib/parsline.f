@@ -73,6 +73,7 @@ C...........   Other local variables
         LOGICAL      :: DELIM            !  true when within or past delimiter 
         LOGICAL, SAVE:: FIRSTIME = .TRUE.!  true first time routine is called
         LOGICAL      :: PREVDELIM = .TRUE. !  true when last char was a delim
+        LOGICAL      :: NOSPACDLIM = .FALSE. !  true when encountered a non-space delimiter since the previous field
         LOGICAL      :: NUMBER           !  true when within number in string 
         LOGICAL      :: QUOTED           !  true when within quotes in string
         LOGICAL      :: THISNMBR         !  true when current iteration is numbr
@@ -152,6 +153,7 @@ C.............  Waiting for next field...
                     DELIM   = .FALSE.
                     QUOTVAL = SINGLEQ
                     PREVDELIM = .FALSE.
+                    NOSPACDLIM = .FALSE.
                     L1     = I + 1
                     NCNT    = NCNT + 1
 
@@ -160,30 +162,31 @@ C.............  Waiting for next field...
                     DELIM   = .FALSE.
                     QUOTVAL = DOUBLEQ
                     PREVDELIM = .FALSE.
+                    NOSPACDLIM = .FALSE.
                     L1      = I + 1
                     NCNT    = NCNT + 1
 
                 ELSE IF( ALPHA ) THEN
                     DELIM = .FALSE.
                     PREVDELIM = .FALSE.
+                    NOSPACDLIM = .FALSE.
                     L1    = I
                     NCNT  = NCNT + 1
 
                 ELSE IF( NUMBER ) THEN
                     DELIM  = .FALSE.
                     PREVDELIM = .FALSE.
+                    NOSPACDLIM = .FALSE.
                     L1     = I
                     NCNT   = NCNT + 1
 
-C...............  If another delimeter, then another field, but last
-C                 field was blank UNLESS delim is a space
-                ELSE IF( CBUF .NE. DELIMLST( 2 ) ) THEN
-                    
-                    IF( PREVDELIM ) THEN
-                        NCNT = NCNT + 1
-                    ELSE
-                        PREVDELIM = .TRUE.
-                    END IF
+C...............  If hit another non-space delimiter without having
+C                 hit another field with contents, then iterate the
+C                 field count to create a blank space.
+                ELSE IF( CBUF .NE. DELIMLST( 2 ) .AND.
+     &                   NOSPACDLIM                   ) THEN
+                    NCNT = NCNT + 1
+                    PREVDELIM = .TRUE.
 
                 END IF  ! Else its a space delimiter
 
@@ -206,13 +209,14 @@ C               a delimiter, then turn field into an alpha
                 ALPHA  = .TRUE.
                 NUMBER = .FALSE.
 
-C.............  If start of field was a number or alpha, and this is a 
-C               delimiter, then end of number has been reached
+C.............  If start of field was a number or alpha, and this char is a 
+C               delimiter, then end of the field has been reached
             ELSE IF( IXP .GT. 0 ) THEN
                 ALPHA = .FALSE.
                 NUMBER = .FALSE.
                 DELIM  = .TRUE.
                 PREVDELIM = .TRUE.
+                IF( CBUF .NE. DELIMLST( 2 ) ) NOSPACDLIM = .TRUE.
                 L2     = I - 1
 
                 CALL STORE_SEGMENT
