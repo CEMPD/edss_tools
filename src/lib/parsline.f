@@ -65,7 +65,7 @@ C...........  Arrays for sorting non-delimiters on a per-machine basis
         CHARACTER, SAVE :: DELIMSRT( NDELIM )
 
 C...........   Other local variables
-        INTEGER         I, J, L, L1, L2  !  counters and indices
+        INTEGER         I, J, K, L, L1, L2  !  counters and indices
         INTEGER         IXP              !  index to non-delimeters
         INTEGER      :: NCNT             !  count of fields
 
@@ -156,6 +156,7 @@ C.............  Waiting for next field...
                     NOSPACDLIM = .FALSE.
                     L1     = I + 1
                     NCNT    = NCNT + 1
+                    K = 1
 
                 ELSE IF( CBUF .EQ. DOUBLEQ ) THEN
                     QUOTED  = .TRUE.
@@ -165,6 +166,7 @@ C.............  Waiting for next field...
                     NOSPACDLIM = .FALSE.
                     L1      = I + 1
                     NCNT    = NCNT + 1
+                    K = 1
 
                 ELSE IF( ALPHA ) THEN
                     DELIM = .FALSE.
@@ -172,6 +174,7 @@ C.............  Waiting for next field...
                     NOSPACDLIM = .FALSE.
                     L1    = I
                     NCNT  = NCNT + 1
+                    K = 1
 
                 ELSE IF( NUMBER ) THEN
                     DELIM  = .FALSE.
@@ -179,6 +182,7 @@ C.............  Waiting for next field...
                     NOSPACDLIM = .FALSE.
                     L1     = I
                     NCNT   = NCNT + 1
+                    K = 1
 
 C...............  If hit another non-space delimiter without having
 C                 hit another field with contents, then iterate the
@@ -187,6 +191,7 @@ C                 field count to create a blank space.
      &                   NOSPACDLIM                   ) THEN
                     NCNT = NCNT + 1
                     PREVDELIM = .TRUE.
+                    K = 1
 
                 END IF  ! Else its a space delimiter
 
@@ -195,11 +200,11 @@ C.............  In a quoted field, skip everything unless it is an end quote
 
                 IF( CBUF .EQ. QUOTVAL ) THEN
                     QUOTED  = .FALSE.
-                    DELIM   = .TRUE.
+cmh                    DELIM   = .TRUE.
                     PREVDELIM = .FALSE.
-                    L2      = I - 1
+                    K = 2
 
-                    CALL STORE_SEGMENT  
+cmh                    CALL STORE_SEGMENT  
                   
                 END IF
 
@@ -208,6 +213,7 @@ C               a delimiter, then turn field into an alpha
             ELSE IF( NUMBER .AND. .NOT. THISNMBR .AND. IXP .LE. 0 ) THEN
                 ALPHA  = .TRUE.
                 NUMBER = .FALSE.
+                K = 1
 
 C.............  If start of field was a number or alpha, and this char is a 
 C               delimiter, then end of the field has been reached
@@ -217,7 +223,7 @@ C               delimiter, then end of the field has been reached
                 DELIM  = .TRUE.
                 PREVDELIM = .TRUE.
                 IF( CBUF .NE. DELIMLST( 2 ) ) NOSPACDLIM = .TRUE.
-                L2     = I - 1
+                L2     = I - K
 
                 CALL STORE_SEGMENT
 
