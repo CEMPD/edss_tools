@@ -79,6 +79,8 @@ C.............  Check variable index to see if this variable is to be read
             J = VINDX( V ) 
             IF( J .EQ. 0 ) CYCLE  ! to go bottom of loop
 
+            VBUF = VNAMES( V )
+
 C.............  Bounds check
             IF( J .GT. NDIM2 ) THEN
 
@@ -90,7 +92,6 @@ C.............  Bounds check
             END IF
 
 C.............  Read variable and print nice error message if cannot
-            VBUF = VNAMES( V )
             IF ( .NOT. READ3( 
      &           FNAME, VBUF, 1, JDATE, JTIME, OUTVAR( 1,J ) ) ) THEN
 
