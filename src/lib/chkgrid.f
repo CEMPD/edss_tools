@@ -90,7 +90,6 @@ C***********************************************************************
 C   begin body of function CHKGRID
 
 C.............  Initialize local error flag
-        EFLAG = .FALSE.
         SFLAG = .FALSE.
 
 C.............  Set tmp rows, columns, and total cells depending on file type
