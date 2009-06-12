@@ -198,9 +198,8 @@ C                   making sure they line up based on the cell sizes
                 CHK_X  = CHK_X - INT( CHK_X )
                 CHK_Y  = ( Y0 - YORIG ) / YCELL
                 CHK_Y  = CHK_Y - INT( CHK_Y )
-c bbh               IF( DBLERR( CHK_X, 0.D0 ) .OR.
-c bbh   &              DBLERR( CHK_Y, 0.D0 )      ) THEN
-                IF( CHK_X > 0.001 .OR. CHK_Y > 0.001 ) THEN
+                IF( DABS( CHK_X ) > 0.001D0  .OR.
+     &              DABS( CHK_Y ) > 0.001D0       ) THEN
                     SFLAG = .TRUE.
                     MESG = 'ERROR: Grid origins not compatible ' //
      &                     'between ' // DATDESC // ' in ' // 
