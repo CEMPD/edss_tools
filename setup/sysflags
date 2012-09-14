@@ -58,7 +58,7 @@ case Linux2_x86_64ifort:
     setenv DBGFLAGS "$DBGFLAG -I${ETINC} -I${IOINC} -I${ETDSRC}/${SMOKE_EXE} -I${FS_ROOT}"
     setenv LDIRS    "-L${TOOLS_BIN}"
     breaksw
-case  Linux2_x86pg:
+case  Linux2_x86_64pg:
     setenv FFLAGS   "$FFLAG -module ${FS_BIN} -I${ETINC} -I${IOINC} -I${ETDSRC}/${SMOKE_EXE} -I${FS_ROOT}"
     setenv DBGFLAGS "$DBGFLAG -module ${FS_BIN} -I${ETINC} -I${IOINC} -I${ETDSRC}/${SMOKE_EXE} -I${FS_ROOT}"
     setenv LDIRS    "-L${TOOLS_BIN}"
