@@ -50,10 +50,9 @@ C.........  INCLUDES:
 
 C.........  EXTERNAL FUNCTIONS and their descriptions:
         CHARACTER(2) CRLF
-        LOGICAL      DBLERR
         INTEGER      GETIFDSC  
 
-        EXTERNAL     CRLF, DBLERR, GETIFDSC
+        EXTERNAL     CRLF, GETIFDSC
 
 C...........   SUBROUTINE ARGUMENTS
         CHARACTER(*), INTENT(IN) :: DATDESC  ! data descriptions
@@ -152,11 +151,10 @@ C               existing to this file.
 C.............  Check settings that must be consistent for exact grid match
             IF( CHKLEVEL .EQ. CHK_ALL ) THEN
 
-                IF ( NCOLS .NE. NC       .OR.
-     &               NROWS .NE. NR       .OR.
-     &               DBLERR( XORIG, X0 ) .OR.
-     &               DBLERR( YORIG, Y0 )      ) THEN
-
+                IF( NCOLS .NE. NC       .OR.
+     &              NROWS .NE. NR       .OR.
+     &              DABS( XORIG-X0 ) > 0.001D0  .OR.
+     &              DABS( YORIG-Y0 ) > 0.001D0  )  THEN
                     SFLAG = .TRUE.
                     MESG = 'ERROR: Columns, rows, x-origin, or ' //
      &                     'y-origin for ' // DATDESC // ' in ' //
@@ -174,15 +172,14 @@ C.............  Check settings that must be consistent for exact grid match
 C.............  Check settings that must be consistent for grids and subgrids
             IF( CHKLEVEL .LE. CHK_TMPSUBG ) THEN
 
-                IF ( GDTYP .NE. GDTYP3D .OR.
-     &               DBLERR( XCELL, XCELL3D  ) .OR.
-     &               DBLERR( YCELL, YCELL3D  ) .OR.
-     &               DBLERR( XCENT, XCENT3D  ) .OR.
-     &               DBLERR( YCENT, YCENT3D  ) .OR.
-     &               DBLERR( P_ALP, P_ALP3D  ) .OR.
-     &               DBLERR( P_BET, P_BET3D  ) .OR.
-     &               DBLERR( P_GAM, P_GAM3D  )      ) THEN
-
+                IF( GDTYP .NE. GDTYP3D .OR.
+     &              DABS( XCELL-XCELL3D  ) > 0.001D0  .OR.
+     &              DABS( YCELL-YCELL3D  ) > 0.001D0  .OR.
+     &              DABS( XCENT-XCENT3D  ) > 0.001D0  .OR.
+     &              DABS( YCENT-YCENT3D  ) > 0.001D0  .OR.
+     &              DABS( P_ALP-P_ALP3D  ) > 0.001D0  .OR.
+     &              DABS( P_BET-P_BET3D  ) > 0.001D0  .OR.
+     &              DABS( P_GAM-P_GAM3D  ) > 0.001D0  ) THEN
                     SFLAG = .TRUE.
                     MESG = 'ERROR: Grid type, cell sizes, or ' //
      &                     'grid projection for ' // DATDESC // ' in '//
@@ -238,8 +235,8 @@ C.........................  Check that current subgrid is the same as the
 C                           previous subgrid
                         IF ( NCOLS .NE. NC       .OR.
      &                       NROWS .NE. NR       .OR.
-     &                       DBLERR( XORIG, X0 ) .OR.
-     &                       DBLERR( YORIG, Y0 )      ) THEN
+     &                       DABS( XORIG-X0 ) > 0.001D0 .OR.
+     &                       DABS( YORIG-Y0 ) > 1.00D0     ) THEN
 
                              SFLAG = .TRUE.
                              MESG = 'ERROR: Columns, rows, x-origin, '//
