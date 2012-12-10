@@ -68,7 +68,7 @@ C.........  Set up initial message.
 
         L1 = LEN_TRIM( NAMES( 1 ) )
         IF( NAMES( 1 ) .NE. ' ' ) THEN
-            MESG = MESG( 1:L0 ) // ' "' // NAMES( 1 )( 1:L1 ) // '"'
+            MESG = MESG( 1:L0 ) // '"' // NAMES( 1 )( 1:L1 ) // '"'
         END IF
 
 C.........  Initialize length of initial message
@@ -81,28 +81,17 @@ C.........  Initialize length of initial message
 
             LCNT = LCNT + L2 + 4
 
-            IF( LCNT .GT. 74 ) THEN
+            IF( LCNT .GT. 80 ) THEN
                 LCNT = L0 + L2 + 4
                 MESG = MESG( 1:L1 ) // ',' // CRLF() // BLANK5 // 
      &                 SPACE // '"' // NAMES( I )( 1:L2 ) // '"'
-
             ELSE
-
                 MESG = MESG( 1:L1 )// ', "'// NAMES( I )( 1:L2 )// '"'
-
             END IF
 
         END DO
 
-C........  Ensure that M3MSG2 is called with 256 characters or
-C          less, even if MESG is longer than that.  This will put
-C          unneeded spaces in the message.
-        L1 = LEN_TRIM( MESG )
-        DO I = 1, L1, 256
-
-            CALL M3MSG2( MESG( I:MIN( I+255,L1 ) ) )
-
-        END DO
+        CALL M3MSG2( MESG )
 
         RETURN
 
