@@ -193,6 +193,18 @@ C                 field count to create a blank space.
                     PREVDELIM = .TRUE.
                     K = 1
 
+C...............  If first col of line is a delimiter, fill a blank for the first col
+                ELSE IF( I == 1 .AND. IXP .GT. 0 .AND.
+     &                   CBUF .NE. DELIMLST( 2 )     ) THEN 
+                    ALPHA = .FALSE.
+                    NUMBER = .FALSE.
+                    DELIM  = .TRUE.
+                    PREVDELIM = .TRUE.
+                    NOSPACDLIM = .TRUE.
+
+                    NCNT = NCNT + 1
+                    SEGMENT( NCNT ) = ' '
+
                 END IF  ! Else its a space delimiter
 
 C.............  In a quoted field, skip everything unless it is an end quote
@@ -200,12 +212,8 @@ C.............  In a quoted field, skip everything unless it is an end quote
 
                 IF( CBUF .EQ. QUOTVAL ) THEN
                     QUOTED  = .FALSE.
-cmh                    DELIM   = .TRUE.
                     PREVDELIM = .FALSE.
                     K = 2
-
-cmh                    CALL STORE_SEGMENT  
-                  
                 END IF
 
 C.............  If start of field was a number, but adjacent character is not
