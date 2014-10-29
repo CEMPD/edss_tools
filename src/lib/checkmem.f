@@ -12,7 +12,6 @@ C
 C  SUBROUTINES AND FUNCTIONS CALLED:
 C
 C  REVISION  HISTORY:
-C       Adapted 10/98 by M Houyoux
 C
 C***********************************************************************
 C
@@ -38,38 +37,29 @@ C***************************************************************************
 
 C...........   ARGUMENTS and their descriptions:
 
-       INTEGER       MSTATUS !  ALLOCATE function exit status
-       CHARACTER(*)  ONVAR   !  Variable name of previous ALLOCATE statement
-       CHARACTER(*)  CALLER  !  Name of calling program
-
-C...........   ARGUMENTS and their descriptions:
-       INTEGER      TRIMLEN
-       EXTERNAL     TRIMLEN
+       INTEGER     , INTENT( IN ) ::  MSTATUS !  ALLOCATE function exit status
+       CHARACTER(*), INTENT( IN ) ::  ONVAR   !  Variable name(s) of previous ALLOCATE statement
+       CHARACTER(*), INTENT( IN ) ::  CALLER  !  Name of calling program
 
 C...........   Local variables
 
-       INTEGER         L1
-       INTEGER         L2
        CHARACTER(256)  MESG
-
-       CHARACTER(16) :: PROGNAME = 'CHECKMEM' ! program name
+       CHARACTER(32)   PNAME
 
 C***********************************************************************
 C   begin body of function CHECKMEM
 
-C.........  Get lengths of input character strings
-        L1 = TRIMLEN( ONVAR )
-        L2 = TRIMLEN( CALLER )
-
 C.........  Abort if memory status is non-zero
 
         IF( MSTATUS .GT. 0 ) THEN            
-            MESG = 'Failure allocating memory for "' // ONVAR( 1:L1 ) //
-     &             '" variable'
-            CALL M3EXIT( CALLER( 1:L2 ), 0, 0, MESG, 2 )
-        ENDIF
+            PNAME = TRIM( CALLER ) // ':' // 'CHECKMEM'
+            WRITE( MESG, '( 3 A, I10 )' )
+     &             'Failure allocating memory for "', TRIM( ONVAR ),
+     &             '":  STATUS=', MSTATUS
+            CALL M3EXIT( PNAME, 0, 0, MESG, 2 )
+        END IF
 
         RETURN
 
-        END
+        END SUBROUTINE CHECKMEM
 

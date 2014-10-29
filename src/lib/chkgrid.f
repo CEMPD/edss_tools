@@ -55,10 +55,10 @@ C.........  EXTERNAL FUNCTIONS and their descriptions:
         EXTERNAL     CRLF, GETIFDSC
 
 C...........   SUBROUTINE ARGUMENTS
-        CHARACTER(*), INTENT(IN) :: DATDESC  ! data descriptions
-        CHARACTER(*), INTENT(IN) :: FTYPE    ! GMAT|GRID file type of interest
-        INTEGER     , INTENT(IN) :: CHKLEVEL ! strigency of check
-        LOGICAL     , INTENT(OUT):: EFLAG    ! true: comparison failed
+        CHARACTER(*), INTENT(IN   ) :: DATDESC  ! data descriptions
+        CHARACTER(*), INTENT(IN   ) :: FTYPE    ! GMAT|GRID file type of interest
+        INTEGER     , INTENT(IN   ) :: CHKLEVEL ! strigency of check
+        LOGICAL     , INTENT(INOUT):: EFLAG    ! true: comparison failed
 
 C...........   Local parameters
         INTEGER, PARAMETER :: CHK_ALL = 0     ! check all of the grid settings
