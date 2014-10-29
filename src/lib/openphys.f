@@ -47,11 +47,11 @@ C...........   EXTERNAL FUNCTIONS and their descriptions:
         EXTERNAL        CRLF, SETENVVAR
 
 C.........  SUBROUTINE ARGUMENTS
-        CHARACTER(*), INTENT (IN) :: CALLER    ! calling routine
-        CHARACTER(*), INTENT (IN) :: FNAME     ! logical file name
-        LOGICAL     , INTENT (IN) :: STATUS    ! OPENSET status to use
-        CHARACTER(*), INTENT (IN) :: PHYSNAME  ! physical file name
-        LOGICAL     , INTENT(OUT) :: EFLAG     ! true: error occurred
+        CHARACTER(*), INTENT(IN   ) :: CALLER    ! calling routine
+        CHARACTER(*), INTENT(IN   ) :: FNAME     ! logical file name
+        LOGICAL     , INTENT(IN   ) :: STATUS    ! OPENSET status to use
+        CHARACTER(*), INTENT(IN   ) :: PHYSNAME  ! physical file name
+        LOGICAL     , INTENT(INOUT) :: EFLAG     ! true: error occurred
 
 C.........  Other local variables
         CHARACTER(256)          MESG    !  message buffer
